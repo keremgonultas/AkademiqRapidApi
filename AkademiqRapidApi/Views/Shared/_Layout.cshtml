@@ -1,50 +1,60 @@
 ﻿<!DOCTYPE html>
-<html lang="en">
+<html lang="tr">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - AkademiqRapidApi</title>
-    <script type="importmap"></script>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/AkademiqRapidApi.styles.css" asp-append-version="true" />
+    <title>Akademiq Dashboard - @ViewData["Title"]</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" />
+    <style>
+        body { background-color: #f4f7f6; font-family: 'Inter', sans-serif; overflow-x: hidden; }
+        .sidebar { min-height: 100vh; background: linear-gradient(180deg, #1a1c1e 0%, #2c3e50 100%); color: white; width: 280px; position: fixed; transition: all 0.3s; }
+        .sidebar .nav-link { color: #adb5bd; padding: 1.2rem 1.5rem; transition: 0.2s; border-radius: 0; border-left: 4px solid transparent; }
+        .sidebar .nav-link:hover, .sidebar .nav-link.active { color: white; background-color: rgba(255,255,255,0.05); border-left: 4px solid #3498db; }
+        .main-content { margin-left: 280px; padding: 30px; min-height: 100vh; }
+        .sidebar-brand { padding: 2rem 1.5rem; font-size: 1.4rem; font-weight: 800; letter-spacing: 1px; color: #3498db; text-transform: uppercase; }
+        .card { border: none; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+    </style>
 </head>
 <body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">AkademiqRapidApi</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                    </ul>
-                </div>
+    <div class="d-flex">
+        <nav class="sidebar shadow">
+            <div class="sidebar-brand">
+                <i class="bi bi-cpu-fill me-2"></i> AKADEMIQ API
+            </div>
+            <ul class="nav nav-pills flex-column mb-auto">
+                <li>
+                    <a href="/Weather/Index" class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Weather" ? "active" : "")">
+                        <i class="bi bi-cloud-sun me-3"></i> Hava Durumu
+                    </a>
+                </li>
+                <li>
+                    <a href="/Football/Index" class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Football" ? "active" : "")">
+                        <i class="bi bi-trophy me-3"></i> Puan Durumu
+                    </a>
+                </li>
+                <li>
+                    <a href="/Movie/Index" class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Movie" ? "active" : "")">
+                        <i class="bi bi-film me-3"></i> Vizyondaki Filmler
+                    </a>
+                </li>
+                <li>
+                    <a href="/Finance/Index" class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Finance" ? "active" : "")">
+                        <i class="bi bi-graph-up-arrow me-3"></i> Finans Haberleri
+                    </a>
+                </li>
+            </ul>
+            <div class="p-4 mt-auto">
+                <hr class="text-secondary">
+                <p class="small text-muted mb-0">Kerem Gönültaş - ESTÜ</p>
             </div>
         </nav>
-    </header>
-    <div class="container">
-        <main role="main" class="pb-3">
+
+        <main class="main-content w-100">
             @RenderBody()
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2026 - AkademiqRapidApi - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-        </div>
-    </footer>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
-    @await RenderSectionAsync("Scripts", required: false)
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

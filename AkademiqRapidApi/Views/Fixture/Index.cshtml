@@ -1,0 +1,145 @@
+﻿@model List<AkademiqRapidApi.Models.FixtureViewModel.Event>
+@{
+    Layout = null; 
+    var logos = ViewBag.Logos as Dictionary<string, string> ?? new Dictionary<string, string>();
+
+    // AKILLI METİN TEMİZLEYİCİ: İsimleri en sade haline (örn: "caykur rizespor a.s." -> "rizespor") çevirir
+    string NormalizeName(string name) 
+    {
+        if (string.IsNullOrEmpty(name)) return "";
+        
+        return name.ToLower()
+            .Replace("i̇", "i").Replace("ı", "i")
+            .Replace("ş", "s").Replace("ç", "c")
+            .Replace("ğ", "g").Replace("ü", "u").Replace("ö", "o")
+            .Replace(" a.ş.", "").Replace(" a.s.", "")
+            .Replace(" jk", "").Replace(" fk", "").Replace(" sk", "")
+            .Replace("caykur ", "").Replace("yilport ", "").Replace("istanbul ", "").Replace("ikas ", "")
+            .Replace(" ", "") // Kalan tüm boşlukları sil
+            .Trim();
+    }
+
+    // KURŞUN GEÇİRMEZ LOGO BULUCU
+    string GetLogoUrl(string teamName)
+    {
+        // 1. Birebir eşleşme var mı?
+        if (logos.ContainsKey(teamName)) return logos[teamName];
+        
+        // 2. İsimleri temizle ve öyle karşılaştır
+        string cleanInput = NormalizeName(teamName);
+        
+        var match = logos.Keys.FirstOrDefault(k => {
+            string cleanDictKey = NormalizeName(k);
+            return cleanDictKey.Contains(cleanInput) || cleanInput.Contains(cleanDictKey);
+        });
+        
+        // Bulursa logoyu, bulamazsa varsayılan top ikonunu gönder (artık dosya işareti yok)
+        return match != null ? logos[match] : "https://cdn-icons-png.flaticon.com/512/861/861512.png";
+    }
+}
+
+<!DOCTYPE html>
+<html class="light" lang="tr">
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        /* Arama menüsünün varsayılan okunu temizlemek için */
+        select { -webkit-appearance: none; -moz-appearance: none; appearance: none; }
+    </style>
+</head>
+<body class="text-slate-800 antialiased pt-10 px-6 pb-12">
+
+    <div class="max-w-4xl mx-auto">
+        <header class="mb-8 flex flex-col md:flex-row md:items-end justify-between gap-4">
+            <div>
+                <h1 class="text-3xl font-black tracking-tighter mb-1 text-slate-900">Trendyol Süper Lig</h1>
+                <p class="text-slate-500 font-medium">Haftalık Fikstür ve Sonuçlar</p>
+            </div>
+            
+            <form method="get" class="relative">
+                <div class="flex items-center gap-2 bg-white px-4 py-2.5 rounded-xl shadow-sm border border-slate-200 hover:border-blue-400 transition-colors">
+                    <span class="material-symbols-outlined text-blue-500 text-xl">calendar_month</span>
+                    <select name="selectedWeek" onchange="this.form.submit()" class="border-0 bg-transparent text-sm font-bold text-slate-700 focus:ring-0 cursor-pointer pr-4 outline-none">
+                        @if (ViewBag.AllWeeks != null)
+                        {
+                            foreach (var week in ViewBag.AllWeeks)
+                            {
+                                if (week == ViewBag.SelectedWeek)
+                                {
+                                    <option value="@week" selected>@week. Hafta Maçları</option>
+                                }
+                                else
+                                {
+                                    <option value="@week">@week. Hafta Maçları</option>
+                                }
+                            }
+                        }
+                    </select>
+                    <span class="material-symbols-outlined text-slate-400 text-lg absolute right-3 pointer-events-none">expand_more</span>
+                </div>
+            </form>
+        </header>
+
+        <div class="space-y-4">
+            @if (Model != null && Model.Any())
+            {
+                @foreach (var match in Model)
+                {
+                    bool isPostponed = match.status.type == "postponed" || match.status.code == 60;
+                    
+                    <div class="bg-white rounded-2xl shadow-sm border border-slate-100 hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 overflow-hidden">
+                        <div class="flex items-center justify-between p-4 md:p-5">
+                            
+                            <div class="flex items-center gap-3 md:gap-4 w-2/5 justify-end">
+                                <span class="font-bold text-sm md:text-base text-slate-800 text-right leading-tight">@match.homeTeam.name</span>
+                                <div class="w-10 h-10 md:w-12 md:h-12 flex-shrink-0 bg-slate-50 rounded-full p-1 border border-slate-100 flex items-center justify-center">
+                                    <img src="@GetLogoUrl(match.homeTeam.name)" alt="@match.homeTeam.name" class="w-full h-full object-contain" />
+                                </div>
+                            </div>
+
+                            <div class="flex flex-col items-center justify-center w-1/5 px-2 md:px-4">
+                                @if (isPostponed)
+                                {
+                                    <span class="px-3 py-1 bg-red-100 text-red-600 rounded-lg text-[10px] md:text-xs font-bold tracking-wider uppercase mb-1">Ertelendi</span>
+                                    <span class="text-lg md:text-xl font-black text-slate-300">- : -</span>
+                                }
+                                else
+                                {
+                                    <div class="flex items-center justify-center gap-2 bg-slate-50 px-4 py-2 rounded-xl border border-slate-200 min-w-[80px] md:min-w-[100px]">
+                                        <span class="text-xl md:text-2xl font-black text-slate-900">@(match.homeScore?.current?.ToString() ?? "0")</span>
+                                        <span class="text-slate-400 font-bold text-lg">:</span>
+                                        <span class="text-xl md:text-2xl font-black text-slate-900">@(match.awayScore?.current?.ToString() ?? "0")</span>
+                                    </div>
+                                    <span class="text-[10px] md:text-xs font-semibold text-emerald-600 mt-1.5 uppercase tracking-widest">Maç Sonucu</span>
+                                }
+                            </div>
+
+                            <div class="flex items-center gap-3 md:gap-4 w-2/5 justify-start">
+                                <div class="w-10 h-10 md:w-12 md:h-12 flex-shrink-0 bg-slate-50 rounded-full p-1 border border-slate-100 flex items-center justify-center">
+                                    <img src="@GetLogoUrl(match.awayTeam.name)" alt="@match.awayTeam.name" class="w-full h-full object-contain" />
+                                </div>
+                                <span class="font-bold text-sm md:text-base text-slate-800 text-left leading-tight">@match.awayTeam.name</span>
+                            </div>
+
+                        </div>
+                    </div>
+                }
+            }
+            else
+            {
+                <div class="text-center py-16 bg-white rounded-3xl border border-slate-100 shadow-sm">
+                    <span class="material-symbols-outlined text-6xl text-slate-200 mb-4 block">sports_soccer</span>
+                    <h3 class="text-xl font-bold text-slate-700">Bu haftaya ait maç bulunamadı.</h3>
+                    <p class="text-slate-500 mt-2">Lütfen yukarıdaki menüden başka bir hafta seçin.</p>
+                </div>
+            }
+        </div>
+    </div>
+</body>
+</html>
