@@ -1,35 +1,41 @@
 ﻿using AkademiqRapidApi.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
-using System.Net.Http;
+using System.Linq;
+using System.Collections.Generic;
 
 namespace AkademiqRapidApi.Controllers
 {
-    public class WeatherController : Controller
+    public class FootballController : Controller
     {
+        [HttpGet]
         public IActionResult Index()
         {
             var client = new HttpClient();
             var request = new HttpRequestMessage
             {
                 Method = HttpMethod.Get,
-
-                // BURAYA YENİ HAVA DURUMU API'NİN LİNKİNİ YAPIŞTIR (Örn: İstanbul için olan sorgu linki)
-                RequestUri = new Uri("https://yahoo-weather5.p.rapidapi.com/weather?location=%C4%B0stanbul&format=json&u=c"),
+                
+                RequestUri = new Uri("https://super-lig-standings.p.rapidapi.com/?season=2025"),
                 Headers =
                 {
                     { "x-rapidapi-key", "fab1dc0c34msha15b0520af426b0p15289fjsndb95a722c59f" },
                     
-                    // BURAYA YENİ API'NİN HOST BİLGİSİNİ YAPIŞTIR
-                    { "x-rapidapi-host", "yahoo-weather5.p.rapidapi.com" },
-                },
+                    { "x-rapidapi-host", "super-lig-standings.p.rapidapi.com" },
+                }
             };
 
             var response = client.SendAsync(request).Result;
             var jsonBody = response.Content.ReadAsStringAsync().Result;
 
-            // Gelen JSON verisini oluşturduğumuz modele Map'liyoruz (dönüştürüyoruz)
-            var values = JsonSerializer.Deserialize<WeatherViewModel>(jsonBody);
+            
+            var values = JsonSerializer.Deserialize<List<FootballViewModel.TeamStanding>>(jsonBody);
+
+            
+            if (values != null)
+            {
+                values = values.OrderBy(x => x.stats.rank).ToList();
+            }
 
             return View(values);
         }

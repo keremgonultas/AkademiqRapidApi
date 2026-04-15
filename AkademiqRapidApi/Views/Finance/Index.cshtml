@@ -1,0 +1,30 @@
+﻿@model AkademiqRapidApi.Models.FinanceViewModel
+
+<div class="container mt-5">
+    <h2 class="mb-4 text-success fw-bold">📈 Teknoloji & Finans Dünyasından Haberler</h2>
+    
+    <div class="row">
+        @if (Model != null && Model.body != null)
+        {
+            @foreach (var news in Model.body)
+            {
+                <div class="col-md-12 mb-3">
+                    <div class="card shadow-sm border-start border-success border-4">
+                        <div class="card-body">
+                            <h5 class="card-title fw-bold">@news.title</h5>
+                            <p class="card-text text-muted">@news.description</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <small class="text-secondary">📅 @news.pubDate</small>
+                                <a href="@news.link" target="_blank" class="btn btn-sm btn-outline-success">Haberi Oku</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+            <div class="alert alert-info">Haberler şu an yüklenemiyor.</div>
+        }
+    </div>
+</div>

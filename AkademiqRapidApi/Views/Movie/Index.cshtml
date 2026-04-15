@@ -1,0 +1,35 @@
+﻿@model List<AkademiqRapidApi.Models.MovieViewModel.Title>
+
+<div class="container mt-5">
+    <h2 class="mb-4 text-warning fw-bold">🍿 Yakında Vizyona Girecekler</h2>
+    <div class="row">
+        @if (Model != null && Model.Any())
+        {
+            @foreach (var movie in Model.Take(12)) // Sadece ilk 12 filmi listeliyoruz
+            {
+                <div class="col-md-3 mb-4">
+                    <div class="card h-100 shadow border-0 bg-dark text-white">
+                        
+                        <img src="@movie.primaryImage"
+                             class="card-img-top"
+                             alt="@movie.primaryTitle"
+                             style="height: 400px; object-fit: cover;"
+                             onerror="this.style.display='none'; this.parentElement.innerHTML += '<div class=\'p-5 bg-secondary text-white\'>Afiş Hazırlanıyor</div>';">
+
+                        <div class="card-body d-flex flex-column text-center p-3">
+                            <h6 class="card-title fw-bold text-truncate mb-3" title="@movie.primaryTitle">@movie.primaryTitle</h6>
+                            
+                            <div class="mt-auto">
+                                <span class="badge bg-danger fs-6 px-3 py-2">Vizyon: @movie.releaseDate</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+            <div class="alert alert-info">Şu an için yakında vizyona girecek afişli bir film bulunamadı.</div>
+        }
+    </div>
+</div>
