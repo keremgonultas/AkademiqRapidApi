@@ -1,0 +1,85 @@
+﻿@{
+    var currentController = ViewContext.RouteData.Values["Controller"]?.ToString();
+    var isWeather = currentController == "Weather";
+    var isFootball = currentController == "Football";
+    var isFixture = currentController == "Fixture";
+    var isMovie = currentController == "Movie";
+    var isFinance = currentController == "Finance";
+    var isExercise = currentController == "Exercise";
+    var isRecipe = currentController == "Recipe";
+    var isTrend = currentController == "Trend";
+    var isSuperLigMenuOpen = isFootball || isFixture;
+}
+<aside class="fixed left-0 top-0 h-screen w-72 bg-gradient-to-b from-[#1a1c1e] to-[#2c3e50] shadow-2xl flex flex-col z-50">
+    <div class="pt-8 pb-6 px-6 flex flex-col gap-3 border-b border-white/5">
+        <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center shadow-lg shadow-blue-500/20 shrink-0">
+                <span class="material-symbols-outlined text-white text-xl" style="font-variation-settings: 'FILL' 1;">data_object</span>
+            </div>
+            <div>
+                <h1 class="text-xl font-black tracking-tighter text-white font-headline leading-tight">Akademiq API</h1>
+                <p class="text-[10px] font-bold text-blue-400 tracking-widest uppercase mt-0.5">The Digital Curator</p>
+            </div>
+        </div>
+    </div>
+    <nav class="flex-1 flex flex-col py-6 overflow-y-auto gap-1">
+        <a href="/Weather/Index" class="mx-3 px-4 py-3 rounded-xl flex items-center gap-3 transition-all duration-200 @(isWeather ? "bg-white/10 text-white shadow-sm" : "text-slate-400 hover:text-white hover:bg-white/5")">
+            <span class="material-symbols-outlined @(isWeather ? "text-blue-400" : "")" style="font-variation-settings: 'FILL' @(isWeather ? "1" : "0");">cloudy</span>
+            <span class="font-medium text-sm tracking-tight">Hava Durumu</span>
+        </a>
+        <div class="mx-3 mt-2 flex flex-col">
+            <div class="px-4 py-3 flex items-center justify-between text-slate-300">
+                <div class="flex items-center gap-3">
+                    <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' @(isSuperLigMenuOpen ? "1" : "0");">sports_soccer</span>
+                    <span class="font-bold text-sm tracking-tight text-white">Trendyol Süper Lig</span>
+                </div>
+                <span class="material-symbols-outlined text-sm text-slate-500">
+                    @(isSuperLigMenuOpen ? "expand_less" : "expand_more")
+                </span>
+            </div>
+            <div class="flex flex-col gap-1 mt-1 pl-4 ml-6 border-l border-white/10">
+                <a href="/Football/Index" class="pl-4 py-2.5 rounded-r-xl flex items-center gap-3 transition-all duration-200 @(isFootball ? "text-white bg-gradient-to-r from-blue-500/20 to-transparent border-l-2 border-blue-500 -ml-[1px]" : "text-slate-400 hover:text-white hover:bg-white/5 border-l-2 border-transparent -ml-[1px]")">
+                    <span class="font-medium text-sm tracking-tight">Puan Durumu</span>
+                </a>
+                <a href="/Fixture/Index" class="pl-4 py-2.5 rounded-r-xl flex items-center gap-3 transition-all duration-200 @(isFixture ? "text-white bg-gradient-to-r from-blue-500/20 to-transparent border-l-2 border-blue-500 -ml-[1px]" : "text-slate-400 hover:text-white hover:bg-white/5 border-l-2 border-transparent -ml-[1px]")">
+                    <span class="font-medium text-sm tracking-tight">Maç Sonuçları</span>
+                </a>
+            </div>
+        </div>
+        <a href="/Exercise/Index" class="mx-3 mt-2 px-4 py-3 rounded-xl flex items-center gap-3 transition-all duration-200 @(isExercise ? "bg-white/10 text-white shadow-sm" : "text-slate-400 hover:text-white hover:bg-white/5")">
+            <span class="material-symbols-outlined @(isExercise ? "text-emerald-400" : "")" style="font-variation-settings: 'FILL' @(isExercise ? "1" : "0");">fitness_center</span>
+            <span class="font-medium text-sm tracking-tight">Günlük Egzersizler</span>
+        </a>
+        <a href="/Recipe/Index" class="mx-3 mt-2 px-4 py-3 rounded-xl flex items-center gap-3 transition-all duration-200 @(isRecipe ? "bg-white/10 text-white shadow-sm" : "text-slate-400 hover:text-white hover:bg-white/5")">
+            <span class="material-symbols-outlined @(isRecipe ? "text-orange-400" : "")" style="font-variation-settings: 'FILL' @(isRecipe ? "1" : "0");">restaurant_menu</span>
+            <span class="font-medium text-sm tracking-tight">Haftanın Tarifi</span>
+        </a>
+        <a href="/Trend/Index" class="mx-3 mt-2 px-4 py-3 rounded-xl flex items-center gap-3 transition-all duration-200 @(isTrend ? "bg-white/10 text-white shadow-sm" : "text-slate-400 hover:text-white hover:bg-white/5")">
+            <span class="material-symbols-outlined @(isTrend ? "text-red-500" : "")" style="font-variation-settings: 'FILL' @(isTrend ? "1" : "0");">play_circle</span>
+            <span class="font-medium text-sm tracking-tight">Trend Videolar</span>
+        </a>
+        <a href="/Movie/Index" class="mx-3 mt-2 px-4 py-3 rounded-xl flex items-center gap-3 transition-all duration-200 @(isMovie ? "bg-white/10 text-white shadow-sm" : "text-slate-400 hover:text-white hover:bg-white/5")">
+            <span class="material-symbols-outlined @(isMovie ? "text-blue-400" : "")" style="font-variation-settings: 'FILL' @(isMovie ? "1" : "0");">movie</span>
+            <span class="font-medium text-sm tracking-tight">Vizyondaki Filmler</span>
+        </a>
+        <a href="/Finance/Index" class="mx-3 px-4 py-3 rounded-xl flex items-center gap-3 transition-all duration-200 @(isFinance ? "bg-white/10 text-white shadow-sm" : "text-slate-400 hover:text-white hover:bg-white/5")">
+            <span class="material-symbols-outlined @(isFinance ? "text-blue-400" : "")" style="font-variation-settings: 'FILL' @(isFinance ? "1" : "0");">trending_up</span>
+            <span class="font-medium text-sm tracking-tight">Finans Haberleri</span>
+        </a>
+    </nav>
+    <div class="p-6 flex flex-col gap-4 border-t border-white/5 bg-black/10">
+        <button class="relative group overflow-hidden bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white py-3 px-4 rounded-xl transition-all duration-300 flex items-center justify-center gap-2 shadow-lg shadow-blue-500/25">
+            <span class="material-symbols-outlined text-sm text-blue-200" style="font-variation-settings: 'FILL' 1;">stars</span>
+            <span class="font-bold text-sm tracking-tight">Premium Üyelik</span>
+        </button>
+        <div class="flex items-center gap-3 px-2">
+            <div class="w-8 h-8 rounded-full bg-slate-700 flex items-center justify-center border border-slate-600">
+                <span class="material-symbols-outlined text-slate-300 text-sm">person</span>
+            </div>
+            <div>
+                <p class="text-xs font-bold text-slate-300">Kerem Gönültaş</p>
+                <p class="text-[10px] text-slate-500 uppercase tracking-widest">ESTÜ</p>
+            </div>
+        </div>
+    </div>
+</aside>

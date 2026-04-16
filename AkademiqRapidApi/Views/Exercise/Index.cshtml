@@ -1,0 +1,64 @@
+﻿@model List<AkademiqRapidApi.Models.ExerciseViewModel>
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = "Egzersiz Rehberi";
+}
+
+<div class="max-w-7xl mx-auto p-6 lg:p-8">
+    <header class="mb-10 flex flex-col md:flex-row md:items-end justify-between gap-4">
+        <div>
+            <div class="flex items-center gap-3 mb-2">
+                <div class="w-12 h-12 rounded-2xl bg-emerald-100 text-emerald-600 flex items-center justify-center shadow-inner">
+                    <span class="material-symbols-outlined text-3xl" style="font-variation-settings: 'FILL' 1;">fitness_center</span>
+                </div>
+                <h1 class="text-3xl font-black tracking-tighter text-slate-900">Egzersiz Rehberi</h1>
+            </div>
+            <p class="text-slate-500 font-medium mt-1">Vücut geliştirme ve formda kalma için profesyonel teknikler</p>
+        </div>
+    </header>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        @if (Model != null && Model.Any())
+        {
+            @foreach (var exercise in Model)
+            {
+                <div class="bg-white rounded-[2.5rem] border border-slate-100 shadow-sm overflow-hidden hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+                    <div class="p-8">
+                        <div class="flex items-start justify-between mb-6">
+                            <div>
+                                <h3 class="text-2xl font-black text-slate-900 mb-2 capitalize">@exercise.name</h3>
+                                <div class="flex flex-wrap gap-2">
+                                    <span class="px-3 py-1 bg-emerald-50 text-emerald-600 rounded-lg text-xs font-bold uppercase tracking-wider">@exercise.bodyPart</span>
+                                    <span class="px-3 py-1 bg-blue-50 text-blue-600 rounded-lg text-xs font-bold uppercase tracking-wider">@exercise.target</span>
+                                    <span class="px-3 py-1 bg-amber-50 text-amber-600 rounded-lg text-xs font-bold uppercase tracking-wider">@exercise.difficulty</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="space-y-6">
+                            <div>
+                                <h4 class="text-sm font-bold text-slate-400 uppercase tracking-widest mb-4 flex items-center gap-2">
+                                    <span class="material-symbols-outlined text-sm">list_alt</span> Uygulama Talimatları
+                                </h4>
+                                <div class="space-y-3">
+                                    @for (int i = 0; i < exercise.instructions.Count; i++)
+                                    {
+                                        <div class="flex gap-4 group">
+                                            <span class="w-6 h-6 shrink-0 rounded-full bg-slate-100 text-slate-500 flex items-center justify-center text-[10px] font-black group-hover:bg-slate-900 group-hover:text-white transition-colors">@(i + 1)</span>
+                                            <p class="text-slate-600 text-sm leading-relaxed">@exercise.instructions[i]</p>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                            <div class="pt-6 border-t border-slate-50 flex items-center">
+                                <div class="flex items-center gap-2 text-slate-500 bg-slate-50 px-3 py-1.5 rounded-lg border border-slate-100">
+                                    <span class="material-symbols-outlined text-sm">hardware</span>
+                                    <span class="text-[11px] font-bold uppercase tracking-tight">Ekipman: @exercise.equipment</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+    </div>
+</div>

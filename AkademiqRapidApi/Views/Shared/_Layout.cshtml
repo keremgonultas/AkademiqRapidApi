@@ -4,56 +4,47 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Akademiq Dashboard - @ViewData["Title"]</title>
+
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" />
+
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+
     <style>
-        body { background-color: #f4f7f6; font-family: 'Inter', sans-serif; overflow-x: hidden; }
-        .sidebar { min-height: 100vh; background: linear-gradient(180deg, #1a1c1e 0%, #2c3e50 100%); color: white; width: 280px; position: fixed; transition: all 0.3s; }
-        .sidebar .nav-link { color: #adb5bd; padding: 1.2rem 1.5rem; transition: 0.2s; border-radius: 0; border-left: 4px solid transparent; }
-        .sidebar .nav-link:hover, .sidebar .nav-link.active { color: white; background-color: rgba(255,255,255,0.05); border-left: 4px solid #3498db; }
-        .main-content { margin-left: 280px; padding: 30px; min-height: 100vh; }
-        .sidebar-brand { padding: 2rem 1.5rem; font-size: 1.4rem; font-weight: 800; letter-spacing: 1px; color: #3498db; text-transform: uppercase; }
-        .card { border: none; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+        body {
+        background-color: #f8fafc;
+        font-family: 'Inter', sans-serif;
+        overflow-x: hidden;
+        }
+        
+        /* Material İkon Ayarı */
+        .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+
+        /* Yeni Tailwind Sidebar'ın genişliğine (w-72 = 288px) uygun ana içerik boşluğu */
+        .main-content {
+        margin-left: 0;
+        min-height: 100vh;
+        }
+        
+        /* Bilgisayar ekranlarında menü genişliği kadar soldan boşluk bırakır */
+        @@media (min-width: 1024px) {
+        .main-content {
+        margin-left: 18rem; /* 288px */
+        }
+        }
     </style>
 </head>
 <body>
-    <div class="d-flex">
-        <nav class="sidebar shadow">
-            <div class="sidebar-brand">
-                <i class="bi bi-cpu-fill me-2"></i> AKADEMIQ API
-            </div>
-            <ul class="nav nav-pills flex-column mb-auto">
-                <li>
-                    <a href="/Weather/Index" class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Weather" ? "active" : "")">
-                        <i class="bi bi-cloud-sun me-3"></i> Hava Durumu
-                    </a>
-                </li>
-                <li>
-                    <a href="/Football/Index" class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Football" ? "active" : "")">
-                        <i class="bi bi-trophy me-3"></i> Puan Durumu
-                    </a>
-                </li>
-                <li>
-                    <a href="/Movie/Index" class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Movie" ? "active" : "")">
-                        <i class="bi bi-film me-3"></i> Vizyondaki Filmler
-                    </a>
-                </li>
-                <li>
-                    <a href="/Finance/Index" class="nav-link @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Finance" ? "active" : "")">
-                        <i class="bi bi-graph-up-arrow me-3"></i> Finans Haberleri
-                    </a>
-                </li>
-            </ul>
-            <div class="p-4 mt-auto">
-                <hr class="text-secondary">
-                <p class="small text-muted mb-0">Kerem Gönültaş - ESTÜ</p>
-            </div>
-        </nav>
 
-        <main class="main-content w-100">
-            @RenderBody()
-        </main>
-    </div>
+    @await Html.PartialAsync("_Sidebar/Default")
+
+    <main class="main-content">
+        @RenderBody()
+    </main>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>

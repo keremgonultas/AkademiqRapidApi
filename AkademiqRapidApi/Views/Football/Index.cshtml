@@ -1,287 +1,156 @@
 ﻿@model List<AkademiqRapidApi.Models.FootballViewModel.TeamStanding>
 @{
-    Layout = null; 
+    Layout = "_Layout";
+    ViewData["Title"] = "Lig Tablosu";
 }
 
-<!DOCTYPE html>
-<html class="light" lang="tr">
-<head>
-    <meta charset="utf-8" />
-    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
-    <style>
-        body { font-family: 'Inter', sans-serif; }
-        .material-symbols-outlined {
-            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-        }
-    </style>
-    <script id="tailwind-config">
-        tailwind.config = {
-          darkMode: "class",
-          theme: {
-            extend: {
-              "colors": {
-                      "on-primary": "#ffffff",
-                      "on-tertiary-container": "#838486",
-                      "error": "#ba1a1a",
-                      "tertiary": "#000101",
-                      "on-surface": "#191c1d",
-                      "on-primary-fixed": "#091d2e",
-                      "secondary-container": "#98f994",
-                      "on-error-container": "#93000a",
-                      "primary-container": "#091d2e",
-                      "surface-bright": "#f8f9fa",
-                      "outline": "#75777a",
-                      "on-tertiary-fixed-variant": "#454749",
-                      "surface-container-high": "#e7e8e9",
-                      "on-secondary-container": "#0c7521",
-                      "tertiary-fixed": "#e2e2e5",
-                      "on-primary-container": "#73869a",
-                      "secondary-fixed-dim": "#7ddc7a",
-                      "surface": "#f8f9fa",
-                      "tertiary-container": "#1a1c1e",
-                      "surface-container": "#edeeef",
-                      "primary-fixed-dim": "#b5c8df",
-                      "surface-tint": "#4e6073",
-                      "on-tertiary": "#ffffff",
-                      "primary": "#000101",
-                      "inverse-surface": "#2e3132",
-                      "primary-fixed": "#d1e4fb",
-                      "secondary": "#006e1c",
-                      "on-primary-fixed-variant": "#36485b",
-                      "outline-variant": "#c5c6ca",
-                      "background": "#f8f9fa",
-                      "on-secondary-fixed-variant": "#005313",
-                      "inverse-on-surface": "#f0f1f2",
-                      "surface-dim": "#d9dadb",
-                      "surface-variant": "#e1e3e4",
-                      "secondary-fixed": "#98f994",
-                      "on-secondary": "#ffffff",
-                      "surface-container-highest": "#e1e3e4",
-                      "surface-container-lowest": "#ffffff",
-                      "on-surface-variant": "#44474a",
-                      "on-tertiary-fixed": "#1a1c1e",
-                      "surface-container-low": "#f3f4f5",
-                      "on-error": "#ffffff",
-                      "on-secondary-fixed": "#002204",
-                      "error-container": "#ffdad6",
-                      "inverse-primary": "#b5c8df",
-                      "tertiary-fixed-dim": "#c6c6c9",
-                      "on-background": "#191c1d"
-              },
-              "borderRadius": {
-                      "DEFAULT": "0.125rem",
-                      "lg": "0.25rem",
-                      "xl": "0.5rem",
-                      "full": "0.75rem"
-              }
-            },
-          }
-        }
-      </script>
-</head>
-<body class="bg-background text-on-surface antialiased">
-    <nav class="fixed top-0 w-full z-50 bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl shadow-sm dark:shadow-none">
-    <div class="flex justify-between items-center h-16 px-6 max-w-screen-2xl mx-auto">
-        <div class="flex items-center gap-8">
-            <span class="text-xl font-black text-slate-900 dark:text-white tracking-tighter">Akademiq API</span>
-            <div class="hidden md:flex gap-6">
-                <a class="text-slate-900 dark:text-white font-bold border-b-2 border-slate-900 dark:border-white pb-1 font-inter tracking-tight" href="/Football/Index">Puan Durumu</a>
-                
-                <a class="text-slate-500 dark:text-slate-400 font-medium hover:text-slate-900 dark:hover:text-white transition-colors font-inter tracking-tight" href="/Fixture/Index">Maç Sonuçları</a>
-                
-                <a class="text-slate-500 dark:text-slate-400 font-medium hover:text-slate-900 dark:hover:text-white transition-colors font-inter tracking-tight" href="#">Haberler</a>
-                <a class="text-slate-500 dark:text-slate-400 font-medium hover:text-slate-900 dark:hover:text-white transition-colors font-inter tracking-tight" href="#">İstatistikler</a>
+<div class="max-w-[1400px] mx-auto pt-6 px-6 lg:px-8 pb-12">
+    <header class="mb-8 flex flex-col md:flex-row md:items-end justify-between gap-4">
+        <div>
+            <h1 class="text-4xl font-black text-slate-900 tracking-tighter mb-1">Trendyol Süper Lig</h1>
+            <p class="text-slate-500 font-medium text-lg">Güncel Puan Durumu</p>
+        </div>
+        <div class="flex gap-2">
+            <div class="px-4 py-2 bg-white rounded-xl flex items-center gap-2 text-sm font-semibold text-slate-600 shadow-sm border border-slate-200">
+                <span class="material-symbols-outlined text-sm text-blue-500">calendar_month</span>
+                Güncel Sezon
             </div>
         </div>
-        </div>
-</nav>
+    </header>
 
-    <aside class="fixed left-0 top-0 h-full z-40 h-screen w-64 hidden lg:flex flex-col bg-gradient-to-b from-[#1a1c1e] to-[#2c3e50] shadow-2xl pt-20">
-        <div class="px-6 mb-8">
-            <h2 class="text-white font-bold text-lg">Kerem Gönültaş</h2>
-            <p class="text-slate-400 text-xs">ESTÜ</p>
-        </div>
-        <nav class="flex-1 space-y-1">
-            <a class="text-slate-400 hover:text-white hover:bg-white/5 rounded-lg mx-2 px-4 py-3 flex items-center gap-3 transition-all translate-x-1 duration-200" href="/Weather/Index">
-                <span class="material-symbols-outlined">dashboard</span>
-                <span class="font-inter">Hava Durumu</span>
-            </a>
-            <a class="bg-white/10 text-white rounded-lg mx-2 px-4 py-3 flex items-center gap-3 transition-all translate-x-1 duration-200" href="/Football/Index">
-                <span class="material-symbols-outlined">table_chart</span>
-                <span class="font-inter">Lig Tablosu</span>
-            </a>
-            <a class="text-slate-400 hover:text-white hover:bg-white/5 rounded-lg mx-2 px-4 py-3 flex items-center gap-3 transition-all translate-x-1 duration-200" href="/Movie/Index">
-                <span class="material-symbols-outlined">sports_score</span>
-                <span class="font-inter">Filmler</span>
-            </a>
-            <a class="text-slate-400 hover:text-white hover:bg-white/5 rounded-lg mx-2 px-4 py-3 flex items-center gap-3 transition-all translate-x-1 duration-200" href="/Finance/Index">
-                <span class="material-symbols-outlined">swap_horiz</span>
-                <span class="font-inter">Finans</span>
-            </a>
-        </nav>
-        <div class="p-4">
-            <button class="w-full bg-primary-fixed text-on-primary-fixed py-3 rounded-xl font-bold flex items-center justify-center gap-2 hover:bg-primary-fixed-dim transition-colors">
-                <span class="material-symbols-outlined text-sm">stars</span>
-                Premium Üyelik
-            </button>
-        </div>
-    </aside>
-
-    <main class="lg:ml-64 pt-24 pb-12 px-6 lg:px-12">
-        <header class="mb-10">
-            <div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
-                <div>
-                    <h1 class="text-4xl font-black text-primary tracking-tighter mb-1">Trendyol Süper Lig</h1>
-                    <p class="text-on-surface-variant font-medium text-lg">Güncel Puan Durumu</p>
-                </div>
-                <div class="flex gap-2">
-                    <div class="px-4 py-2 bg-surface-container-low rounded-xl flex items-center gap-2 text-sm font-semibold text-on-surface-variant">
-                        <span class="material-symbols-outlined text-sm">calendar_month</span>
-                        Güncel Sezon
-                    </div>
-                </div>
-            </div>
-        </header>
-
-        <div class="grid grid-cols-12 gap-8">
-            <div class="col-span-12 xl:col-span-9">
-                <div class="bg-surface-container-lowest rounded-[2rem] shadow-sm overflow-hidden ring-1 ring-black/5">
-                    <div class="overflow-x-auto">
-                        <table class="w-full text-left border-collapse">
-                            <thead>
-                                <tr class="bg-primary text-white">
-                                    <th class="py-5 px-6 font-bold text-xs uppercase tracking-widest rounded-tl-[2rem]">Sıra</th>
-                                    <th class="py-5 px-6 font-bold text-xs uppercase tracking-widest">Takım</th>
-                                    <th class="py-5 px-4 font-bold text-xs uppercase tracking-widest text-center">O</th>
-                                    <th class="py-5 px-4 font-bold text-xs uppercase tracking-widest text-center">G</th>
-                                    <th class="py-5 px-4 font-bold text-xs uppercase tracking-widest text-center">B</th>
-                                    <th class="py-5 px-4 font-bold text-xs uppercase tracking-widest text-center">M</th>
-                                    <th class="py-5 px-4 font-bold text-xs uppercase tracking-widest text-center">A</th>
-                                    <th class="py-5 px-4 font-bold text-xs uppercase tracking-widest text-center">Y</th>
-                                    <th class="py-5 px-4 font-bold text-xs uppercase tracking-widest text-center">AV</th>
-                                    <th class="py-5 px-6 font-bold text-xs uppercase tracking-widest text-center rounded-tr-[2rem]">P</th>
-                                </tr>
-                            </thead>
-                            <tbody class="divide-y divide-surface-container">
-                                
-                                @if (Model != null && Model.Any())
+    <div class="flex flex-col xl:flex-row gap-8 items-start">
+        
+        <div class="flex-1 w-full min-w-0">
+            <div class="bg-white rounded-[1.5rem] shadow-sm border border-slate-200 overflow-hidden">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse whitespace-nowrap">
+                        <thead>
+                            <tr class="bg-slate-900 text-white">
+                                <th class="py-4 px-6 font-bold text-xs uppercase tracking-widest">Sıra</th>
+                                <th class="py-4 px-6 font-bold text-xs uppercase tracking-widest">Takım</th>
+                                <th class="py-4 px-4 font-bold text-xs uppercase tracking-widest text-center">O</th>
+                                <th class="py-4 px-4 font-bold text-xs uppercase tracking-widest text-center">G</th>
+                                <th class="py-4 px-4 font-bold text-xs uppercase tracking-widest text-center">B</th>
+                                <th class="py-4 px-4 font-bold text-xs uppercase tracking-widest text-center">M</th>
+                                <th class="py-4 px-4 font-bold text-xs uppercase tracking-widest text-center">A</th>
+                                <th class="py-4 px-4 font-bold text-xs uppercase tracking-widest text-center">Y</th>
+                                <th class="py-4 px-4 font-bold text-xs uppercase tracking-widest text-center">AV</th>
+                                <th class="py-4 px-6 font-bold text-xs uppercase tracking-widest text-center">P</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-100">
+                            @if (Model != null && Model.Any())
+                            {
+                                @foreach (var item in Model)
                                 {
-                                    @foreach (var item in Model)
+                                    string rankBgClass = "bg-slate-100 text-slate-500";
+                                    string shadowClass = "";
+
+                                    if (item.stats.rank == 1)
                                     {
-                                        string rankBgClass = "bg-surface-container-high text-on-surface-variant";
-                                        string shadowClass = "";
-
-                                        if (item.stats.rank == 1)
-                                        {
-                                            rankBgClass = "bg-secondary text-white"; 
-                                            shadowClass = "shadow-sm shadow-secondary/20";
-                                        }
-                                        else if (item.stats.rank <= 3) { rankBgClass = "bg-primary-fixed text-on-primary-fixed"; }
-                                        else if (item.stats.rank >= 17) { rankBgClass = "bg-error text-white"; }
-
-                                        string avColor = "text-on-surface-variant";
-                                        string avPrefix = "";
-                                        if (item.stats.goalDifference > 0) { avColor = "text-secondary"; avPrefix = "+"; }
-                                        else if (item.stats.goalDifference < 0) { avColor = "text-error"; }
-
-                                        <tr class="group hover:bg-surface-container-low transition-all cursor-pointer">
-                                            <td class="py-4 px-6">
-                                                <span class="inline-flex items-center justify-center w-8 h-8 rounded-full @rankBgClass font-bold text-sm @shadowClass">
-                                                    @item.stats.rank
-                                                </span>
-                                            </td>
-                                            <td class="py-4 px-6">
-                                                <div class="flex items-center gap-4">
-                                                    <div class="w-10 h-10 rounded-xl bg-surface-container-low p-1.5 flex items-center justify-center group-hover:scale-110 transition-transform">
-                                                        <img alt="@item.team.name Logo" class="w-full h-full object-contain" src="@item.team.logo" />
-                                                    </div>
-                                                    <span class="font-bold text-on-surface">@item.team.name</span>
-                                                </div>
-                                            </td>
-                                            <td class="py-4 px-4 text-center font-medium text-on-surface-variant">@item.stats.gamesPlayed</td>
-                                            <td class="py-4 px-4 text-center font-medium text-on-surface-variant">@item.stats.wins</td>
-                                            <td class="py-4 px-4 text-center font-medium text-on-surface-variant">@item.stats.ties</td>
-                                            <td class="py-4 px-4 text-center font-medium text-on-surface-variant">@item.stats.losses</td>
-                                            <td class="py-4 px-4 text-center font-medium text-on-surface-variant">@item.stats.goalsFor</td>
-                                            <td class="py-4 px-4 text-center font-medium text-on-surface-variant">@item.stats.goalsAgainst</td>
-                                            <td class="py-4 px-4 text-center font-bold @avColor">@(avPrefix)@item.stats.goalDifference</td>
-                                            <td class="py-4 px-6 text-center bg-surface-container-low/50">
-                                                <span class="text-xl font-black text-primary">@item.stats.points</span>
-                                            </td>
-                                        </tr>
+                                        rankBgClass = "bg-emerald-500 text-white";
+                                        shadowClass = "shadow-sm shadow-emerald-500/20";
                                     }
-                                }
-                                else
-                                {
-                                    <tr>
-                                        <td colspan="10" class="text-center py-8 text-on-surface-variant font-medium">
-                                            Puan durumu verisi şu an çekilemiyor.
+                                    else if (item.stats.rank <= 3) { rankBgClass = "bg-blue-50 text-blue-700"; }
+                                    else if (item.stats.rank >= 17) { rankBgClass = "bg-rose-500 text-white"; }
+
+                                    string avColor = "text-slate-500";
+                                    string avPrefix = "";
+                                    if (item.stats.goalDifference > 0) { avColor = "text-emerald-600"; avPrefix = "+"; }
+                                    else if (item.stats.goalDifference < 0) { avColor = "text-rose-500"; }
+
+                                    <tr class="group hover:bg-slate-50 transition-all cursor-pointer">
+                                        <td class="py-3 px-6">
+                                            <span class="inline-flex items-center justify-center w-8 h-8 rounded-full @rankBgClass font-bold text-sm @shadowClass">
+                                                @item.stats.rank
+                                            </span>
+                                        </td>
+                                        <td class="py-3 px-6">
+                                            <div class="flex items-center gap-4">
+                                                <div class="w-10 h-10 rounded-xl border border-slate-200 bg-white p-1.5 flex items-center justify-center group-hover:scale-110 transition-transform shrink-0">
+                                                    <img alt="@item.team.name Logo" class="w-full h-full object-contain" src="@item.team.logo" />
+                                                </div>
+                                                <span class="font-bold text-slate-800">@item.team.name</span>
+                                            </div>
+                                        </td>
+                                        <td class="py-3 px-4 text-center font-medium text-slate-500">@item.stats.gamesPlayed</td>
+                                        <td class="py-3 px-4 text-center font-medium text-slate-500">@item.stats.wins</td>
+                                        <td class="py-3 px-4 text-center font-medium text-slate-500">@item.stats.ties</td>
+                                        <td class="py-3 px-4 text-center font-medium text-slate-500">@item.stats.losses</td>
+                                        <td class="py-3 px-4 text-center font-medium text-slate-500">@item.stats.goalsFor</td>
+                                        <td class="py-3 px-4 text-center font-medium text-slate-500">@item.stats.goalsAgainst</td>
+                                        <td class="py-3 px-4 text-center font-bold @avColor">@(avPrefix)@item.stats.goalDifference</td>
+                                        <td class="py-3 px-6 text-center bg-slate-50/50">
+                                            <span class="text-xl font-black text-slate-900">@item.stats.points</span>
                                         </td>
                                     </tr>
                                 }
-                            </tbody>
-                        </table>
-                    </div>
+                            }
+                            else
+                            {
+                                <tr>
+                                    <td colspan="10" class="text-center py-12 text-slate-500 font-medium">
+                                        <span class="material-symbols-outlined text-4xl block mb-2 text-slate-300">sentiment_dissatisfied</span>
+                                        Puan durumu verisi şu an çekilemiyor.
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
                 </div>
             </div>
+        </div>
 
-            <div class="col-span-12 xl:col-span-3 space-y-8">
+        <div class="w-full xl:w-80 shrink-0">
+            @if (Model != null && Model.Any())
+            {
+                int totalGoals = Model.Sum(x => x.stats.goalsFor);
+                int totalGamesPlayed = Model.Sum(x => x.stats.gamesPlayed) / 2;
+                double goalsPerMatch = totalGamesPlayed > 0 ? Math.Round((double)totalGoals / totalGamesPlayed, 2) : 0;
                 
-                @if (Model != null && Model.Any())
-                {
-                    // C# İLE CANLI İSTATİSTİK HESAPLAMALARI
-                    int totalGoals = Model.Sum(x => x.stats.goalsFor); // Ligdeki toplam gol
-                    int totalGamesPlayed = Model.Sum(x => x.stats.gamesPlayed) / 2; // Oynanan toplam maç sayısı (1 maçta 2 takım oynadığı için 2'ye böldük)
-                    double goalsPerMatch = totalGamesPlayed > 0 ? Math.Round((double)totalGoals / totalGamesPlayed, 2) : 0; // Maç başı gol ortalaması
-                    
-                    var bestOffense = Model.OrderByDescending(x => x.stats.goalsFor).FirstOrDefault(); // En çok gol atan takım
-                    var bestDefense = Model.OrderBy(x => x.stats.goalsAgainst).FirstOrDefault(); // En az gol yiyen takım
+                var bestOffense = Model.OrderByDescending(x => x.stats.goalsFor).FirstOrDefault();
+                var bestDefense = Model.OrderBy(x => x.stats.goalsAgainst).FirstOrDefault();
 
-                    <div class="bg-primary text-white p-8 rounded-[2rem] shadow-xl relative overflow-hidden">
-                        <div class="relative z-10">
-                            <h3 class="text-xs uppercase tracking-widest font-bold text-on-primary-container mb-6">Lig İstatistikleri</h3>
-                            <div class="space-y-6">
-                                
-                                <div class="flex items-center justify-between">
-                                    <span class="text-sm font-medium text-white/80">Toplam Gol</span>
-                                    <span class="text-3xl font-black">@totalGoals</span>
-                                </div>
-                                
-                                <div class="flex items-center justify-between">
-                                    <span class="text-sm font-medium text-white/80">Maç Başı Ortalama</span>
-                                    <span class="text-xl font-bold text-secondary">@goalsPerMatch</span>
-                                </div>
-
-                                <div class="w-full h-px bg-white/10 my-4"></div>
-
-                                <div class="flex flex-col gap-1">
-                                    <span class="text-xs font-medium text-white/60">En Golcü Takım</span>
-                                    <div class="flex items-center justify-between">
-                                        <span class="text-sm font-bold">@(bestOffense?.team.name ?? "-")</span>
-                                        <span class="text-sm font-bold text-secondary">@(bestOffense?.stats.goalsFor ?? 0) Gol</span>
-                                    </div>
-                                </div>
-
-                                <div class="flex flex-col gap-1">
-                                    <span class="text-xs font-medium text-white/60">En İyi Savunma</span>
-                                    <div class="flex items-center justify-between">
-                                        <span class="text-sm font-bold">@(bestDefense?.team.name ?? "-")</span>
-                                        <span class="text-sm font-bold text-primary-fixed">@(bestDefense?.stats.goalsAgainst ?? 0) Yedi</span>
-                                    </div>
-                                </div>
-
+                <div class="bg-slate-900 text-white p-6 md:p-8 rounded-[2rem] shadow-xl relative overflow-hidden">
+                    <div class="relative z-10">
+                        <h3 class="text-xs uppercase tracking-widest font-bold text-white/50 mb-6">Lig İstatistikleri</h3>
+                        <div class="space-y-6">
+                            
+                            <div class="flex items-center justify-between gap-2">
+                                <span class="text-sm font-medium text-white/80 shrink-0">Toplam Gol</span>
+                                <span class="text-2xl md:text-3xl font-black">@totalGoals</span>
                             </div>
-                        </div>
-                        <div class="absolute -right-4 -bottom-4 opacity-10">
-                            <span class="material-symbols-outlined text-[140px]" style="font-variation-settings: 'FILL' 1;">analytics</span>
+                            
+                            <div class="flex items-center justify-between gap-2">
+                                <span class="text-sm font-medium text-white/80 shrink-0">Maç Başına</span>
+                                <span class="text-xl font-bold text-emerald-400">@goalsPerMatch</span>
+                            </div>
+
+                            <div class="w-full h-px bg-white/10 my-4"></div>
+
+                            <div class="flex flex-col gap-1">
+                                <span class="text-xs font-medium text-white/50">En Golcü Takım</span>
+                                <div class="flex items-center justify-between gap-2">
+                                    <span class="text-sm font-bold truncate">@(bestOffense?.team.name ?? "-")</span>
+                                    <span class="text-sm font-bold text-emerald-400 shrink-0">@(bestOffense?.stats.goalsFor ?? 0) Gol</span>
+                                </div>
+                            </div>
+
+                            <div class="flex flex-col gap-1">
+                                <span class="text-xs font-medium text-white/50">En İyi Savunma</span>
+                                <div class="flex items-center justify-between gap-2">
+                                    <span class="text-sm font-bold truncate">@(bestDefense?.team.name ?? "-")</span>
+                                    <span class="text-sm font-bold text-sky-400 shrink-0">@(bestDefense?.stats.goalsAgainst ?? 0) Yedi</span>
+                                </div>
+                            </div>
+
                         </div>
                     </div>
-                }
-            </div>
+                    <div class="absolute -right-4 -bottom-4 opacity-[0.03] pointer-events-none">
+                        <span class="material-symbols-outlined text-[140px]" style="font-variation-settings: 'FILL' 1;">analytics</span>
+                    </div>
+                </div>
+            }
         </div>
-    </main>
-</body>
-</html>
+    </div>
+</div>

@@ -1,0 +1,91 @@
+﻿@model AkademiqRapidApi.Models.RecipeResult
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = "Haftanın Tarifi";
+}
+
+<div class="max-w-7xl mx-auto p-6 lg:p-8">
+    <header class="mb-10 flex flex-col md:flex-row md:items-end justify-between gap-4">
+        <div>
+            <div class="flex items-center gap-3 mb-2">
+                <div class="w-12 h-12 rounded-2xl bg-orange-100 text-orange-600 flex items-center justify-center shadow-inner">
+                    <span class="material-symbols-outlined text-3xl" style="font-variation-settings: 'FILL' 1;">restaurant_menu</span>
+                </div>
+                <h1 class="text-3xl font-black tracking-tighter text-slate-900">Haftanın Tarifi</h1>
+            </div>
+            <p class="text-slate-500 font-medium mt-1">API üzerinden sağlanan ve 7 gün boyunca önbellekte tutulan içerik</p>
+        </div>
+    </header>
+
+    @if (Model != null)
+    {
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <div class="lg:col-span-1 space-y-6">
+                <div class="bg-white rounded-[2rem] border border-slate-100 shadow-sm p-6">
+                    <h3 class="text-lg font-black text-slate-900 mb-4 flex items-center gap-2">
+                        <span class="material-symbols-outlined text-orange-500">kitchen</span> Malzemeler
+                    </h3>
+                    <ul class="space-y-3">
+                        @if (Model.ingredients != null)
+                        {
+                            @foreach (var item in Model.ingredients)
+                            {
+                                <li class="flex justify-between items-center py-2 border-b border-slate-50 last:border-0">
+                                    <span class="text-sm font-semibold text-slate-700 capitalize">@item.name</span>
+                                    <span class="text-xs font-bold text-slate-400 bg-slate-50 px-2 py-1 rounded-md">@item.amount</span>
+                                </li>
+                            }
+                        }
+                    </ul>
+                </div>
+
+                <div class="bg-slate-900 rounded-[2rem] border border-slate-800 shadow-sm p-6 text-white">
+                    <h3 class="text-lg font-black mb-4 flex items-center gap-2">
+                        <span class="material-symbols-outlined text-emerald-400">monitor_weight</span> Besin Değerleri
+                    </h3>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="bg-white/5 rounded-xl p-3">
+                            <span class="block text-xs font-bold text-white/50 uppercase tracking-wider mb-1">Kalori</span>
+                            <span class="text-xl font-black text-emerald-400">@Model.nutrition_info?.calories</span>
+                        </div>
+                        <div class="bg-white/5 rounded-xl p-3">
+                            <span class="block text-xs font-bold text-white/50 uppercase tracking-wider mb-1">Protein</span>
+                            <span class="text-xl font-black text-white">@Model.nutrition_info?.protein</span>
+                        </div>
+                        <div class="bg-white/5 rounded-xl p-3">
+                            <span class="block text-xs font-bold text-white/50 uppercase tracking-wider mb-1">Karbonhidrat</span>
+                            <span class="text-xl font-black text-white">@Model.nutrition_info?.carbs</span>
+                        </div>
+                        <div class="bg-white/5 rounded-xl p-3">
+                            <span class="block text-xs font-bold text-white/50 uppercase tracking-wider mb-1">Yağ</span>
+                            <span class="text-xl font-black text-white">@Model.nutrition_info?.fats</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="lg:col-span-2">
+                <div class="bg-white rounded-[2rem] border border-slate-100 shadow-sm p-8 h-full">
+                    <h2 class="text-3xl font-black text-slate-900 mb-8 leading-tight">@Model.title</h2>
+                    
+                    <h4 class="text-sm font-bold text-slate-400 uppercase tracking-widest mb-6 flex items-center gap-2">
+                        <span class="material-symbols-outlined text-sm">menu_book</span> Hazırlanışı
+                    </h4>
+                    
+                    <div class="space-y-4">
+                        @if (Model.instructions != null)
+                        {
+                            @for (int i = 0; i < Model.instructions.Count; i++)
+                            {
+                                <div class="flex gap-4 group">
+                                    <span class="w-8 h-8 shrink-0 rounded-xl bg-orange-50 text-orange-600 flex items-center justify-center text-xs font-black transition-colors">@(i + 1)</span>
+                                    <p class="text-slate-600 text-base leading-relaxed pt-1">@Model.instructions[i]</p>
+                                </div>
+                            }
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>

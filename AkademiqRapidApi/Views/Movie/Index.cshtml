@@ -1,35 +1,68 @@
 ﻿@model List<AkademiqRapidApi.Models.MovieViewModel.Title>
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = "Vizyondaki Filmler";
+}
 
-<div class="container mt-5">
-    <h2 class="mb-4 text-warning fw-bold">🍿 Yakında Vizyona Girecekler</h2>
-    <div class="row">
+<div class="max-w-7xl mx-auto p-6 lg:p-8">
+    <header class="mb-10 flex flex-col md:flex-row md:items-end justify-between gap-4">
+        <div>
+            <div class="flex items-center gap-3 mb-2">
+                <div class="w-12 h-12 rounded-2xl bg-amber-100 text-amber-600 flex items-center justify-center shadow-inner">
+                    <span class="material-symbols-outlined text-3xl" style="font-variation-settings: 'FILL' 1;">movie</span>
+                </div>
+                <h1 class="text-3xl font-black tracking-tighter text-slate-900">Yakında Vizyonda</h1>
+            </div>
+            <p class="text-slate-500 font-medium md:ml-15 mt-1">Sinema dünyasından en yeni ve beklenen yapımlar</p>
+        </div>
+    </header>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 xl:gap-8">
         @if (Model != null && Model.Any())
         {
             @foreach (var movie in Model.Take(12)) // Sadece ilk 12 filmi listeliyoruz
             {
-                <div class="col-md-3 mb-4">
-                    <div class="card h-100 shadow border-0 bg-dark text-white">
-                        
+                <div class="group relative flex flex-col bg-slate-900 rounded-[2rem] overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2">
+                    
+                    <div class="relative w-full aspect-[2/3] overflow-hidden bg-slate-800">
                         <img src="@movie.primaryImage"
-                             class="card-img-top"
                              alt="@movie.primaryTitle"
-                             style="height: 400px; object-fit: cover;"
-                             onerror="this.style.display='none'; this.parentElement.innerHTML += '<div class=\'p-5 bg-secondary text-white\'>Afiş Hazırlanıyor</div>';">
-
-                        <div class="card-body d-flex flex-column text-center p-3">
-                            <h6 class="card-title fw-bold text-truncate mb-3" title="@movie.primaryTitle">@movie.primaryTitle</h6>
-                            
-                            <div class="mt-auto">
-                                <span class="badge bg-danger fs-6 px-3 py-2">Vizyon: @movie.releaseDate</span>
+                             class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                             onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1485846234645-a62644f84728?q=80&w=2059&auto=format&fit=crop'; this.parentElement.insertAdjacentHTML('beforeend', '<div class=\'absolute inset-0 flex items-center justify-center bg-slate-900/80 backdrop-blur-sm\'><span class=\'text-slate-400 font-semibold tracking-widest uppercase text-sm\'>Afiş Bekleniyor</span></div>');">
+                        
+                        <div class="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/40 to-transparent opacity-80 group-hover:opacity-90 transition-opacity duration-300"></div>
+                        
+                        <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-10">
+                            <div class="w-14 h-14 rounded-full bg-amber-500/90 text-white flex items-center justify-center backdrop-blur-md scale-75 group-hover:scale-100 transition-transform duration-500">
+                                <span class="material-symbols-outlined text-2xl">play_arrow</span>
                             </div>
                         </div>
+                    </div>
+
+                    <div class="absolute bottom-0 left-0 w-full p-6 flex flex-col gap-3 z-20 translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
+                        <div class="self-start">
+                            <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-rose-500/90 backdrop-blur-md text-white text-xs font-bold tracking-wider uppercase shadow-lg">
+                                <span class="material-symbols-outlined text-[14px]">event</span>
+                                @movie.releaseDate
+                            </span>
+                        </div>
+                        
+                        <h3 class="text-xl font-black text-white leading-tight line-clamp-2 drop-shadow-md" title="@movie.primaryTitle">
+                            @movie.primaryTitle
+                        </h3>
                     </div>
                 </div>
             }
         }
         else
         {
-            <div class="alert alert-info">Şu an için yakında vizyona girecek afişli bir film bulunamadı.</div>
+            <div class="col-span-full flex flex-col items-center justify-center py-24 bg-white rounded-[2rem] border border-slate-100 shadow-sm">
+                <div class="w-24 h-24 mb-6 rounded-full bg-slate-50 flex items-center justify-center">
+                    <span class="material-symbols-outlined text-5xl text-slate-300">movie_off</span>
+                </div>
+                <h3 class="text-xl font-bold text-slate-700 mb-2">Film Bulunamadı</h3>
+                <p class="text-slate-500 text-center max-w-md">Şu an için yakında vizyona girecek afişli bir film bulunmuyor. Lütfen daha sonra tekrar kontrol edin.</p>
+            </div>
         }
     </div>
 </div>

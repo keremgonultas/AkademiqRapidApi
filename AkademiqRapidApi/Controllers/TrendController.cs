@@ -7,28 +7,28 @@ using System.Text.Json;
 
 namespace AkademiqRapidApi.Controllers
 {
-    public class FinanceController : Controller
+    public class TrendController : Controller
     {
         private readonly IMemoryCache _memoryCache;
 
-        public FinanceController(IMemoryCache memoryCache)
+        public TrendController(IMemoryCache memoryCache)
         {
             _memoryCache = memoryCache;
         }
 
         public IActionResult Index()
         {
-            if (!_memoryCache.TryGetValue("FinanceDataCacheV3", out FinanceViewModel financeData))
+            if (!_memoryCache.TryGetValue("TrendVideoCache", out TrendResponse trendData))
             {
                 var client = new HttpClient();
                 var request = new HttpRequestMessage
                 {
                     Method = HttpMethod.Get,
-                    RequestUri = new Uri("https://yahoo-finance15.p.rapidapi.com/api/v1/markets/news?ticker=AAPL%2CTSLA"),
+                    RequestUri = new Uri("https://yt-api.p.rapidapi.com/trending?geo=TR&type=now"),
                     Headers =
                     {
                         { "x-rapidapi-key", "fab1dc0c34msha15b0520af426b0p15289fjsndb95a722c59f" },
-                        { "x-rapidapi-host", "yahoo-finance15.p.rapidapi.com" },
+                        { "x-rapidapi-host", "yt-api.p.rapidapi.com" },
                     },
                 };
 
@@ -38,26 +38,21 @@ namespace AkademiqRapidApi.Controllers
                     response.EnsureSuccessStatusCode();
                     var jsonBody = response.Content.ReadAsStringAsync().Result;
 
-                    financeData = JsonSerializer.Deserialize<FinanceViewModel>(jsonBody);
+                    var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+                    trendData = JsonSerializer.Deserialize<TrendResponse>(jsonBody, options);
 
-                    if (financeData != null && financeData.body != null)
+                    if (trendData?.data != null)
                     {
-                        foreach (var news in financeData.body)
-                        {
-                            news.title = AkademiqRapidApi.Models.TranslationHelper.TranslateToTurkish(news.title);
-                            news.description = AkademiqRapidApi.Models.TranslationHelper.TranslateToTurkish(news.description);
-                        }
-
-                        _memoryCache.Set("FinanceDataCacheV3", financeData, TimeSpan.FromHours(12));
+                        _memoryCache.Set("TrendVideoCache", trendData, TimeSpan.FromHours(12));
                     }
                 }
                 catch
                 {
-                    financeData = new FinanceViewModel();
+                    trendData = new TrendResponse();
                 }
             }
 
-            return View(financeData);
+            return View(trendData?.data);
         }
     }
 }
