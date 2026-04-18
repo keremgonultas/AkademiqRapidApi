@@ -2,150 +2,71 @@
 @{
     Layout = "_Layout";
     ViewData["Title"] = "Hava Durumu";
-
-    // AKILLI İKON SEÇİCİ: İngilizce hava durumu metnine göre uygun Google Material ikonunu döndürür
-    string GetWeatherIcon(string condition)
-    {
-        if (string.IsNullOrEmpty(condition)) return "partly_cloudy_day";
-        var c = condition.ToLower();
-        if (c.Contains("sun") || c.Contains("clear")) return "sunny";
-        if (c.Contains("rain") || c.Contains("shower") || c.Contains("drizzle")) return "rainy";
-        if (c.Contains("storm") || c.Contains("thunder")) return "thunderstorm";
-        if (c.Contains("snow") || c.Contains("ice")) return "cloudy_snowing";
-        if (c.Contains("cloud") || c.Contains("overcast")) return "cloud";
-        return "partly_cloudy_day";
-    }
 }
 
-<div class="max-w-7xl mx-auto p-6 lg:p-8">
-    
-    @if (Model != null && Model.location != null && Model.current_observation != null)
+<div class="max-w-[1400px] mx-auto pt-6 px-6 lg:px-8 pb-12">
+    <header class="mb-10 flex flex-col md:flex-row md:items-end justify-between gap-4">
+        <div>
+            <div class="flex items-center gap-3 mb-2">
+                <div class="w-12 h-12 rounded-2xl bg-blue-100 text-blue-600 flex items-center justify-center shadow-inner">
+                    <span class="material-symbols-outlined text-3xl" style="font-variation-settings: 'FILL' 1;">cloudy</span>
+                </div>
+                <h1 class="text-4xl font-black text-slate-900 tracking-tighter mb-1">Hava Durumu</h1>
+            </div>
+            <p class="text-slate-500 font-medium text-lg mt-1">@Model.location.city için anlık ve haftalık tahminler</p>
+        </div>
+    </header>
+
+    @if (Model != null && Model.current_observation != null)
     {
-        <header class="mb-8 flex flex-col md:flex-row md:items-end justify-between gap-4">
-            <div>
-                <div class="flex items-center gap-3 mb-2">
-                    <div class="w-12 h-12 rounded-2xl bg-sky-100 text-sky-600 flex items-center justify-center shadow-inner">
-                        <span class="material-symbols-outlined text-3xl" style="font-variation-settings: 'FILL' 1;">routine</span>
-                    </div>
-                    <h1 class="text-3xl font-black tracking-tighter text-slate-900">Hava Durumu</h1>
+        <div class="bg-gradient-to-br from-blue-500 to-indigo-600 rounded-[2.5rem] p-8 md:p-12 text-white shadow-2xl shadow-blue-500/30 relative overflow-hidden mb-10">
+            <div class="relative z-10 flex flex-col md:flex-row justify-between items-center gap-8">
+                <div class="text-center md:text-left">
+                    <h2 class="text-6xl md:text-8xl font-black tracking-tighter mb-2">@Model.current_observation.condition.temperature°</h2>
+                    <p class="text-xl md:text-2xl font-bold text-blue-100 uppercase tracking-widest">
+                        @AkademiqRapidApi.Models.WeatherTranslator.TranslateCondition(Model.current_observation.condition.text)
+                    </p>
                 </div>
-                <p class="text-slate-500 font-medium md:ml-15 mt-1">
-                    <span class="font-bold text-slate-700">@Model.location.city, @Model.location.country</span> için anlık veriler ve tahminler
-                </p>
-            </div>
-        </header>
-
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-10">
-            
-            <div class="lg:col-span-2 bg-gradient-to-br from-sky-400 to-blue-600 rounded-[2.5rem] p-8 md:p-10 text-white shadow-xl shadow-blue-500/20 relative overflow-hidden flex flex-col justify-between min-h-[300px]">
-                <span class="material-symbols-outlined absolute -right-12 -bottom-12 text-[250px] text-white/10 select-none" style="font-variation-settings: 'FILL' 1;">
-                    @GetWeatherIcon(Model.current_observation.condition.text)
-                </span>
                 
-                <div class="relative z-10 flex flex-col h-full justify-between">
-                    <div class="flex justify-between items-start">
-                        <span class="px-4 py-1.5 rounded-full bg-white/20 backdrop-blur-md text-sm font-bold tracking-widest uppercase border border-white/20">
-                            Şu An
-                        </span>
-                        <span class="material-symbols-outlined text-5xl" style="font-variation-settings: 'FILL' 1;">
-                            @GetWeatherIcon(Model.current_observation.condition.text)
-                        </span>
+                <div class="grid grid-cols-2 gap-8 md:gap-16">
+                    <div class="text-center">
+                        <span class="material-symbols-outlined text-4xl mb-2 opacity-50">air</span>
+                        <p class="text-xs font-black uppercase tracking-widest text-blue-200">Rüzgar</p>
+                        <p class="text-xl font-bold">@Model.current_observation.wind.speed km/h</p>
                     </div>
-                    
-                    <div class="mt-8">
-                        <div class="text-8xl md:text-9xl font-black tracking-tighter drop-shadow-lg">
-                            @Model.current_observation.condition.temperature°
-                        </div>
-                        <p class="text-2xl md:text-3xl font-semibold text-sky-50 mt-2 capitalize drop-shadow-md">
-                            @Model.current_observation.condition.text
-                        </p>
+                    <div class="text-center">
+                        <span class="material-symbols-outlined text-4xl mb-2 opacity-50">humidity_percentage</span>
+                        <p class="text-xs font-black uppercase tracking-widest text-blue-200">Nem</p>
+                        <p class="text-xl font-bold">%@Model.current_observation.atmosphere.humidity</p>
                     </div>
                 </div>
             </div>
-
-            <div class="bg-white rounded-[2.5rem] p-6 shadow-sm border border-slate-100 flex flex-col gap-4 justify-between">
-                
-                <div class="flex items-center gap-4 p-4 rounded-2xl bg-slate-50 border border-slate-100 hover:bg-sky-50 transition-colors">
-                    <div class="w-12 h-12 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center shrink-0">
-                        <span class="material-symbols-outlined">humidity_percentage</span>
-                    </div>
-                    <div>
-                        <p class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-0.5">Nem Oranı</p>
-                        <p class="text-xl font-black text-slate-800">%@Model.current_observation.atmosphere.humidity</p>
-                    </div>
-                </div>
-
-                <div class="flex items-center gap-4 p-4 rounded-2xl bg-slate-50 border border-slate-100 hover:bg-teal-50 transition-colors">
-                    <div class="w-12 h-12 rounded-full bg-teal-100 text-teal-600 flex items-center justify-center shrink-0">
-                        <span class="material-symbols-outlined">air</span>
-                    </div>
-                    <div>
-                        <p class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-0.5">Rüzgar Hızı</p>
-                        <p class="text-xl font-black text-slate-800">@Model.current_observation.wind.speed <span class="text-sm font-semibold text-slate-500">km/s</span></p>
-                    </div>
-                </div>
-
-                <div class="flex items-center gap-4 p-4 rounded-2xl bg-slate-50 border border-slate-100 hover:bg-amber-50 transition-colors">
-                    <div class="w-12 h-12 rounded-full bg-amber-100 text-amber-600 flex items-center justify-center shrink-0">
-                        <span class="material-symbols-outlined">wb_twilight</span>
-                    </div>
-                    <div class="flex-1 flex justify-between items-center pr-2">
-                        <div>
-                            <p class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-0.5">Doğuş</p>
-                            <p class="text-base font-black text-slate-800">@Model.current_observation.astronomy.sunrise</p>
-                        </div>
-                        <div class="h-8 w-px bg-slate-200 mx-2"></div>
-                        <div class="text-right">
-                            <p class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-0.5">Batış</p>
-                            <p class="text-base font-black text-slate-800">@Model.current_observation.astronomy.sunset</p>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
+            <span class="material-symbols-outlined absolute -right-12 -bottom-12 text-[250px] text-white opacity-10 pointer-events-none" style="font-variation-settings: 'FILL' 1;">partly_cloudy_day</span>
         </div>
 
-        <h3 class="text-xl font-black text-slate-900 mb-6 flex items-center gap-2 px-2">
-            <span class="material-symbols-outlined text-slate-400">calendar_month</span>
-            Haftalık Tahmin
-        </h3>
-        
-        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-            @if (Model.forecasts != null)
+        <h3 class="text-2xl font-black text-slate-800 mb-6 px-2">Haftalık Tahmin</h3>
+        <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-4">
+            @foreach (var forecast in Model.forecasts)
             {
-                @foreach (var day in Model.forecasts.Take(6))
-                {
-                    <div class="bg-white rounded-[1.5rem] p-5 shadow-sm border border-slate-100 flex flex-col items-center text-center hover:-translate-y-1.5 hover:shadow-md hover:border-sky-200 transition-all duration-300">
-                        <span class="text-sm font-bold text-slate-400 uppercase tracking-widest mb-4">@day.day</span>
-                        
-                        <div class="w-14 h-14 rounded-full bg-slate-50 flex items-center justify-center mb-4 text-sky-500">
-                            <span class="material-symbols-outlined text-3xl" style="font-variation-settings: 'FILL' 1;">
-                                @GetWeatherIcon(day.text)
-                            </span>
-                        </div>
-                        
-                        <p class="text-[11px] font-bold text-slate-500 mb-4 h-8 line-clamp-2 leading-tight" title="@day.text">
-                            @day.text
-                        </p>
-                        
-                        <div class="flex items-center gap-3 mt-auto bg-slate-50 px-3 py-1.5 rounded-xl border border-slate-100">
-                            <span class="text-lg font-black text-rose-500">@day.high°</span>
-                            <span class="text-slate-300 font-bold">/</span>
-                            <span class="text-base font-bold text-sky-500">@day.low°</span>
-                        </div>
+                <div class="bg-white rounded-3xl p-6 border border-slate-100 shadow-sm hover:shadow-md transition-all text-center group">
+                    <p class="text-slate-400 font-bold text-sm uppercase tracking-widest mb-4">
+                        @AkademiqRapidApi.Models.WeatherTranslator.TranslateDay(forecast.day)
+                    </p>
+                    
+                    <div class="w-12 h-12 bg-slate-50 rounded-2xl mx-auto mb-4 flex items-center justify-center group-hover:bg-blue-50 transition-colors">
+                        <span class="material-symbols-outlined text-blue-500">sunny</span>
                     </div>
-                }
+
+                    <div class="flex flex-col gap-1 mb-4">
+                        <span class="text-2xl font-black text-slate-900">@forecast.high°</span>
+                        <span class="text-sm font-bold text-slate-400">@forecast.low°</span>
+                    </div>
+
+                    <p class="text-[10px] font-black uppercase tracking-tighter text-slate-400 leading-tight">
+                        @AkademiqRapidApi.Models.WeatherTranslator.TranslateCondition(forecast.text)
+                    </p>
+                </div>
             }
-        </div>
-    }
-    else
-    {
-        <div class="flex flex-col items-center justify-center py-24 bg-white rounded-[2rem] border border-slate-100 shadow-sm mt-8">
-            <div class="w-24 h-24 mb-6 rounded-full bg-slate-50 flex items-center justify-center">
-                <span class="material-symbols-outlined text-5xl text-slate-300">cloud_off</span>
-            </div>
-            <h3 class="text-xl font-bold text-slate-700 mb-2">Hava Durumu Yüklenemedi</h3>
-            <p class="text-slate-500 text-center max-w-md">Şu an için hava durumu verilerine ulaşılamıyor. Lütfen API bağlantınızı ve kotalarınızı kontrol edin.</p>
         </div>
     }
 </div>

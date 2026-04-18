@@ -1,6 +1,7 @@
 ﻿using AkademiqRapidApi.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Net.Http;
 using System.Text.Json;
@@ -10,10 +11,12 @@ namespace AkademiqRapidApi.Controllers
     public class TrendController : Controller
     {
         private readonly IMemoryCache _memoryCache;
+        private readonly IConfiguration _configuration;
 
-        public TrendController(IMemoryCache memoryCache)
+        public TrendController(IMemoryCache memoryCache, IConfiguration configuration)
         {
             _memoryCache = memoryCache;
+            _configuration = configuration;
         }
 
         public IActionResult Index()
@@ -27,7 +30,7 @@ namespace AkademiqRapidApi.Controllers
                     RequestUri = new Uri("https://yt-api.p.rapidapi.com/trending?geo=TR&type=now"),
                     Headers =
                     {
-                        { "x-rapidapi-key", "fab1dc0c34msha15b0520af426b0p15289fjsndb95a722c59f" },
+                        { "x-rapidapi-key", _configuration["RapidApiKey"] },
                         { "x-rapidapi-host", "yt-api.p.rapidapi.com" },
                     },
                 };

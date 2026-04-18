@@ -1,8 +1,169 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@model AkademiqRapidApi.Models.DashboardViewModel
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = "Ana Panel";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="max-w-[1400px] mx-auto pt-6 px-6 lg:px-8 pb-12">
+    <header class="mb-10 flex flex-col md:flex-row md:items-end justify-between gap-4">
+        <div>
+            <h1 class="text-4xl font-black text-slate-900 tracking-tighter mb-1">Hoş Geldiniz!</h1>
+            <p class="text-slate-500 font-medium text-lg">Dijital API Dashboard'una genel bir bakış.</p>
+        </div>
+    </header>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        
+        <div class="bg-gradient-to-br from-blue-500 to-indigo-600 rounded-[2rem] p-6 text-white shadow-lg shadow-blue-500/25 relative overflow-hidden flex flex-col justify-between">
+            <div class="relative z-10 flex justify-between items-start">
+                <div>
+                    <h3 class="text-blue-200 font-bold text-sm uppercase tracking-widest mb-1">Hava Durumu</h3>
+                    @if (Model.WeatherInfo != null)
+                    {
+                        <h2 class="text-2xl font-black">@Model.WeatherInfo.location.city</h2>
+                        <p class="text-blue-100 mt-1">@AkademiqRapidApi.Models.WeatherTranslator.TranslateCondition(Model.WeatherInfo.current_observation.condition.text)</p>
+                    }
+                    else
+                    {
+                        <h2 class="text-xl font-bold">Veri Bekleniyor</h2>
+                        <a href="/Weather/Index" class="text-xs bg-white/20 px-3 py-1 rounded-lg mt-2 inline-block hover:bg-white/30">Güncelle</a>
+                    }
+                </div>
+                <div class="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-md">
+                    <span class="material-symbols-outlined text-3xl">cloudy</span>
+                </div>
+            </div>
+            @if (Model.WeatherInfo != null)
+            {
+                <div class="relative z-10 mt-6 text-5xl font-black">
+                    @Model.WeatherInfo.current_observation.condition.temperature°C
+                </div>
+            }
+            <span class="material-symbols-outlined absolute -right-6 -bottom-6 text-[120px] text-white opacity-10 pointer-events-none">partly_cloudy_day</span>
+        </div>
+
+        <div class="bg-slate-900 rounded-[2rem] p-6 text-white shadow-xl shadow-slate-900/10 relative overflow-hidden flex flex-col justify-between border border-slate-800">
+            <div class="relative z-10 flex justify-between items-start">
+                <div>
+                    <h3 class="text-slate-400 font-bold text-sm uppercase tracking-widest mb-1">Lider Kripto</h3>
+                    @if (Model.TopCryptoCoins != null && Model.TopCryptoCoins.Count > 0)
+                    {
+                        var btc = Model.TopCryptoCoins.FirstOrDefault(x => x.symbol == "BTC") ?? Model.TopCryptoCoins.First();
+                        var priceParsed = double.TryParse(btc.price, System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out double p) ? p : 0;
+                        var formattedPrice = priceParsed.ToString("0.00", System.Globalization.CultureInfo.InvariantCulture);
+                
+                        <h2 class="text-2xl font-black text-amber-400">@btc.name</h2>
+                        <div class="mt-6 text-4xl font-black">$@formattedPrice</div>
+                        <div class="text-emerald-400 text-sm font-bold mt-1">@btc.change%</div>
+                    }
+                    else
+                    {
+                        <h2 class="text-xl font-bold">Veri Bekleniyor</h2>
+                        <a href="/Crypto/Index" class="text-xs bg-white/10 px-3 py-1 rounded-lg mt-2 inline-block hover:bg-white/20">Piyasaya Git</a>
+                    }
+                </div>
+                <div class="w-12 h-12 bg-amber-500/20 text-amber-500 rounded-full flex items-center justify-center">
+                    <span class="material-symbols-outlined text-3xl">currency_bitcoin</span>
+                </div>
+            </div>
+            <span class="material-symbols-outlined absolute -right-6 -bottom-6 text-[120px] text-white opacity-5 pointer-events-none">monitoring</span>
+        </div>
+
+        <div class="bg-white rounded-[2rem] p-6 shadow-sm border border-slate-200 relative overflow-hidden flex flex-col justify-between">
+            <div class="flex justify-between items-start">
+                <div>
+                    <h3 class="text-slate-400 font-bold text-sm uppercase tracking-widest mb-1">Türkiye Akaryakıt</h3>
+                    @if (Model.TurkeyGasPrice != null)
+                    {
+                        <h2 class="text-2xl font-black text-slate-800">Güncel (Euro)</h2>
+                        <div class="mt-6 flex flex-col gap-2">
+                            <div class="flex justify-between items-center w-full gap-8">
+                                <span class="text-slate-500 font-medium">Benzin:</span>
+                                <span class="text-lg font-black text-slate-900">€@Model.TurkeyGasPrice.gasoline</span>
+                            </div>
+                            <div class="flex justify-between items-center w-full gap-8">
+                                <span class="text-slate-500 font-medium">Dizel:</span>
+                                <span class="text-lg font-black text-slate-900">€@Model.TurkeyGasPrice.diesel</span>
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <h2 class="text-xl font-bold text-slate-800">Veri Bekleniyor</h2>
+                        <a href="/GasPrice/Index" class="text-xs bg-slate-100 text-slate-600 px-3 py-1 rounded-lg mt-2 inline-block hover:bg-slate-200">Fiyatlara Bak</a>
+                    }
+                </div>
+                <div class="w-12 h-12 bg-teal-100 text-teal-600 rounded-full flex items-center justify-center">
+                    <span class="material-symbols-outlined text-2xl">local_gas_station</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        
+        <div class="bg-white rounded-[2rem] shadow-sm border border-slate-200 p-6 lg:p-8">
+            <div class="flex items-center justify-between mb-6">
+                <h3 class="text-xl font-black text-slate-800">Süper Lig Zirvesi</h3>
+                <a href="/Football/Index" class="text-blue-500 text-sm font-bold hover:underline">Tümünü Gör</a>
+            </div>
+            
+            @if (Model.TopTeams != null && Model.TopTeams.Any())
+            {
+                <div class="flex flex-col gap-4">
+                    @foreach (var team in Model.TopTeams)
+                    {
+                        <div class="flex items-center justify-between p-4 rounded-xl bg-slate-50 border border-slate-100 hover:shadow-md transition-shadow cursor-pointer">
+                            <div class="flex items-center gap-4">
+                                <span class="text-lg font-black text-slate-400 w-4">@team.stats.rank</span>
+                                <img src="@team.team.logo" class="w-10 h-10 object-contain" alt="logo" />
+                                <span class="font-bold text-slate-800">@team.team.name</span>
+                            </div>
+                            <div class="text-xl font-black text-slate-900">@team.stats.points <span class="text-sm font-bold text-slate-400">P</span></div>
+                        </div>
+                    }
+                </div>
+            }
+            else
+            {
+                <div class="p-8 text-center bg-slate-50 rounded-xl border border-dashed border-slate-200">
+                    <p class="text-slate-500 font-medium">Sıralama verisi için puan durumunu güncelleyin.</p>
+                </div>
+            }
+        </div>
+
+        <div class="bg-white rounded-[2rem] shadow-sm border border-slate-200 p-6 lg:p-8">
+            <div class="flex items-center justify-between mb-6">
+                <h3 class="text-xl font-black text-slate-800">Günün Trendleri</h3>
+                <a href="/Trend/Index" class="text-red-500 text-sm font-bold hover:underline">Keşfet</a>
+            </div>
+
+            @if (Model.TrendVideos != null && Model.TrendVideos.Any())
+            {
+                <div class="flex flex-col gap-4">
+                    @foreach (var video in Model.TrendVideos)
+                    {
+                        var thumb = video.thumbnail != null && video.thumbnail.Count > 0 ? video.thumbnail.Last().url : "";
+                        <div class="flex gap-4 p-3 rounded-xl bg-white border border-slate-100 hover:border-red-200 hover:shadow-md transition-all cursor-pointer group">
+                            <div class="w-32 h-20 rounded-lg overflow-hidden shrink-0 relative">
+                                <img src="@thumb" class="w-full h-full object-cover group-hover:scale-105 transition-transform" />
+                                <div class="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors"></div>
+                            </div>
+                            <div class="flex flex-col justify-center">
+                                <h4 class="font-bold text-slate-800 text-sm line-clamp-2 mb-1">@video.title</h4>
+                                <span class="text-xs text-slate-500 font-medium">@video.channelTitle • @video.viewCount izlenme</span>
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
+            else
+            {
+                <div class="p-8 text-center bg-slate-50 rounded-xl border border-dashed border-slate-200">
+                    <p class="text-slate-500 font-medium">Trend verileri için video sayfasını ziyaret edin.</p>
+                </div>
+            }
+        </div>
+
+    </div>
 </div>

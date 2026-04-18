@@ -22,7 +22,7 @@
 
         public class Status
         {
-            public int code { get; set; } // Hata buradaydı, ekledik
+            public int code { get; set; } 
             public string description { get; set; }
             public string type { get; set; }
         }
@@ -31,10 +31,10 @@
         {
             public string name { get; set; }
             public string shortName { get; set; }
-            public TeamColors teamColors { get; set; } // Hata buradaydı, ekledik
+            public TeamColors teamColors { get; set; } 
         }
 
-        // Takım renkleri için yeni sınıf
+        
         public class TeamColors
         {
             public string primary { get; set; }

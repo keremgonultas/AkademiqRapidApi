@@ -1,6 +1,7 @@
 ﻿using AkademiqRapidApi.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Net.Http;
 using System.Text.Json;
@@ -10,10 +11,12 @@ namespace AkademiqRapidApi.Controllers
     public class RecipeController : Controller
     {
         private readonly IMemoryCache _memoryCache;
+        private readonly IConfiguration _configuration;
 
-        public RecipeController(IMemoryCache memoryCache)
+        public RecipeController(IMemoryCache memoryCache, IConfiguration configuration)
         {
             _memoryCache = memoryCache;
+            _configuration = configuration;
         }
 
         public IActionResult Index()
@@ -27,7 +30,7 @@ namespace AkademiqRapidApi.Controllers
                     RequestUri = new Uri("https://ai-food-recipe-generator-api-custom-diet-quick-meals.p.rapidapi.com/generate?noqueue=1"),
                     Headers =
                     {
-                        { "x-rapidapi-key", "fab1dc0c34msha15b0520af426b0p15289fjsndb95a722c59f" },
+                        { "x-rapidapi-key", _configuration["RapidApiKey"] },
                         { "x-rapidapi-host", "ai-food-recipe-generator-api-custom-diet-quick-meals.p.rapidapi.com" },
                     }
                 };

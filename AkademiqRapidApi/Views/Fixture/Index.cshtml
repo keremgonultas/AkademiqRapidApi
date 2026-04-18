@@ -5,7 +5,7 @@
 
     var logos = ViewBag.Logos as Dictionary<string, string> ?? new Dictionary<string, string>();
 
-    // AKILLI METİN TEMİZLEYİCİ: İsimleri en sade haline (örn: "caykur rizespor a.s." -> "rizespor") çevirir
+    
     string NormalizeName(string name)
     {
         if (string.IsNullOrEmpty(name)) return "";
@@ -17,17 +17,17 @@
             .Replace(" a.ş.", "").Replace(" a.s.", "")
             .Replace(" jk", "").Replace(" fk", "").Replace(" sk", "")
             .Replace("caykur ", "").Replace("yilport ", "").Replace("istanbul ", "").Replace("ikas ", "")
-            .Replace(" ", "") // Kalan tüm boşlukları sil
+            .Replace(" ", "") 
             .Trim();
     }
 
-    // KURŞUN GEÇİRMEZ LOGO BULUCU
+    
     string GetLogoUrl(string teamName)
     {
-        // 1. Birebir eşleşme var mı?
+        
         if (logos.ContainsKey(teamName)) return logos[teamName];
         
-        // 2. İsimleri temizle ve öyle karşılaştır
+       
         string cleanInput = NormalizeName(teamName);
         
         var match = logos.Keys.FirstOrDefault(k =>
@@ -36,13 +36,13 @@
             return cleanDictKey.Contains(cleanInput) || cleanInput.Contains(cleanDictKey);
         });
         
-        // Bulursa logoyu, bulamazsa varsayılan top ikonunu gönder
+        
         return match != null ? logos[match] : "https://cdn-icons-png.flaticon.com/512/861/861512.png";
     }
 }
 
 <style>
-    /* Arama menüsünün varsayılan okunu temizlemek için */
+    
     select {
         -webkit-appearance: none;
         -moz-appearance: none;

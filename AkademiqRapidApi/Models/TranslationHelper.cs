@@ -36,8 +36,14 @@ namespace AkademiqRapidApi.Models
             try
             {
                 var response = client.SendAsync(request).Result;
-                response.EnsureSuccessStatusCode();
                 var jsonResponse = response.Content.ReadAsStringAsync().Result;
+
+               
+                Console.WriteLine("🚨 ÇEVİRİ API HTTP DURUMU: " + response.StatusCode);
+                Console.WriteLine("🚨 ÇEVİRİ API CEVABI: " + jsonResponse);
+                
+
+                response.EnsureSuccessStatusCode();
 
                 using (JsonDocument doc = JsonDocument.Parse(jsonResponse))
                 {
@@ -51,8 +57,9 @@ namespace AkademiqRapidApi.Models
                     return englishText;
                 }
             }
-            catch
+            catch (Exception ex)
             {
+                Console.WriteLine("🚨 ÇEVİRİ İŞLEMİNDE KRİTİK HATA: " + ex.Message);
                 return englishText;
             }
         }

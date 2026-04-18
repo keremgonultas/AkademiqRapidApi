@@ -8,12 +8,12 @@ using System.Text.Json;
 
 namespace AkademiqRapidApi.Controllers
 {
-    public class FinanceController : Controller
+    public class CryptoController : Controller
     {
         private readonly IMemoryCache _memoryCache;
         private readonly IConfiguration _configuration;
 
-        public FinanceController(IMemoryCache memoryCache, IConfiguration configuration)
+        public CryptoController(IMemoryCache memoryCache, IConfiguration configuration)
         {
             _memoryCache = memoryCache;
             _configuration = configuration;
@@ -21,17 +21,17 @@ namespace AkademiqRapidApi.Controllers
 
         public IActionResult Index()
         {
-            if (!_memoryCache.TryGetValue("FinanceDataCacheV3", out FinanceViewModel financeData))
+            if (!_memoryCache.TryGetValue("CryptoDataCacheV2", out CryptoResponse cryptoData))
             {
                 var client = new HttpClient();
                 var request = new HttpRequestMessage
                 {
                     Method = HttpMethod.Get,
-                    RequestUri = new Uri("https://yahoo-finance15.p.rapidapi.com/api/v1/markets/news?ticker=AAPL%2CTSLA"),
+                    RequestUri = new Uri("https://coinranking1.p.rapidapi.com/coins/trending?referenceCurrencyUuid=yhjMzLPhuIDl&timePeriod=24h&limit=25&offset=0"),
                     Headers =
                     {
                         { "x-rapidapi-key", _configuration["RapidApiKey"] },
-                        { "x-rapidapi-host", "yahoo-finance15.p.rapidapi.com" },
+                        { "x-rapidapi-host", "coinranking1.p.rapidapi.com" },
                     },
                 };
 
@@ -41,26 +41,26 @@ namespace AkademiqRapidApi.Controllers
                     response.EnsureSuccessStatusCode();
                     var jsonBody = response.Content.ReadAsStringAsync().Result;
 
-                    financeData = JsonSerializer.Deserialize<FinanceViewModel>(jsonBody);
-
-                    if (financeData != null && financeData.body != null)
+                    var options = new JsonSerializerOptions
                     {
-                        foreach (var news in financeData.body)
-                        {
-                            news.title = AkademiqRapidApi.Models.TranslationHelper.TranslateToTurkish(news.title);
-                            news.description = AkademiqRapidApi.Models.TranslationHelper.TranslateToTurkish(news.description);
-                        }
+                        PropertyNameCaseInsensitive = true,
+                        IgnoreNullValues = true
+                    };
 
-                        _memoryCache.Set("FinanceDataCacheV3", financeData, TimeSpan.FromHours(12));
+                    cryptoData = JsonSerializer.Deserialize<CryptoResponse>(jsonBody, options);
+
+                    if (cryptoData?.data?.coins != null && cryptoData.data.coins.Count > 0)
+                    {
+                        _memoryCache.Set("CryptoDataCacheV2", cryptoData, TimeSpan.FromMinutes(5));
                     }
                 }
                 catch
                 {
-                    financeData = new FinanceViewModel();
+                    cryptoData = new CryptoResponse();
                 }
             }
 
-            return View(financeData);
+            return View(cryptoData?.data?.coins);
         }
     }
 }

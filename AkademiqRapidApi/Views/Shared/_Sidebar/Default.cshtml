@@ -1,5 +1,6 @@
 ﻿@{
     var currentController = ViewContext.RouteData.Values["Controller"]?.ToString();
+    var isDashboard = currentController == "Home";
     var isWeather = currentController == "Weather";
     var isFootball = currentController == "Football";
     var isFixture = currentController == "Fixture";
@@ -8,6 +9,8 @@
     var isExercise = currentController == "Exercise";
     var isRecipe = currentController == "Recipe";
     var isTrend = currentController == "Trend";
+    var isCrypto = currentController == "Crypto";
+    var isGasPrice = currentController == "GasPrice";
     var isSuperLigMenuOpen = isFootball || isFixture;
 }
 <aside class="fixed left-0 top-0 h-screen w-72 bg-gradient-to-b from-[#1a1c1e] to-[#2c3e50] shadow-2xl flex flex-col z-50">
@@ -18,26 +21,35 @@
             </div>
             <div>
                 <h1 class="text-xl font-black tracking-tighter text-white font-headline leading-tight">Akademiq API</h1>
-                <p class="text-[10px] font-bold text-blue-400 tracking-widest uppercase mt-0.5">The Digital Curator</p>
+                <p class="text-[10px] font-bold text-blue-400 tracking-widest uppercase mt-0.5">API DASHBOARD</p>
             </div>
         </div>
     </div>
+    
     <nav class="flex-1 flex flex-col py-6 overflow-y-auto gap-1">
-        <a href="/Weather/Index" class="mx-3 px-4 py-3 rounded-xl flex items-center gap-3 transition-all duration-200 @(isWeather ? "bg-white/10 text-white shadow-sm" : "text-slate-400 hover:text-white hover:bg-white/5")">
+        
+        <a href="/Home/Index" class="mx-3 px-4 py-3 rounded-xl flex items-center gap-3 transition-all duration-200 @(isDashboard ? "bg-white/10 text-white shadow-sm" : "text-slate-400 hover:text-white hover:bg-white/5")">
+            <span class="material-symbols-outlined @(isDashboard ? "text-indigo-400" : "")" style="font-variation-settings: 'FILL' @(isDashboard ? "1" : "0");">space_dashboard</span>
+            <span class="font-medium text-sm tracking-tight">Ana Panel</span>
+        </a>
+
+        <a href="/Weather/Index" class="mx-3 mt-2 px-4 py-3 rounded-xl flex items-center gap-3 transition-all duration-200 @(isWeather ? "bg-white/10 text-white shadow-sm" : "text-slate-400 hover:text-white hover:bg-white/5")">
             <span class="material-symbols-outlined @(isWeather ? "text-blue-400" : "")" style="font-variation-settings: 'FILL' @(isWeather ? "1" : "0");">cloudy</span>
             <span class="font-medium text-sm tracking-tight">Hava Durumu</span>
         </a>
-        <div class="mx-3 mt-2 flex flex-col">
-            <div class="px-4 py-3 flex items-center justify-between text-slate-300">
+        
+        <div class="flex flex-col mt-2">
+            <button type="button" onclick="toggleSuperLigMenu()" class="mx-3 px-4 py-3 flex items-center justify-between rounded-xl transition-all duration-200 cursor-pointer @(isSuperLigMenuOpen ? "text-white" : "text-slate-400 hover:text-white hover:bg-white/5")">
                 <div class="flex items-center gap-3">
-                    <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' @(isSuperLigMenuOpen ? "1" : "0");">sports_soccer</span>
-                    <span class="font-bold text-sm tracking-tight text-white">Trendyol Süper Lig</span>
+                    <span class="material-symbols-outlined @(isSuperLigMenuOpen ? "text-blue-400" : "")" style="font-variation-settings: 'FILL' @(isSuperLigMenuOpen ? "1" : "0");">sports_soccer</span>
+                    <span class="font-medium text-sm tracking-tight">Trendyol Süper Lig</span>
                 </div>
-                <span class="material-symbols-outlined text-sm text-slate-500">
+                <span id="superLigIcon" class="material-symbols-outlined text-sm @(isSuperLigMenuOpen ? "text-blue-400" : "text-slate-500") transition-transform duration-200">
                     @(isSuperLigMenuOpen ? "expand_less" : "expand_more")
                 </span>
-            </div>
-            <div class="flex flex-col gap-1 mt-1 pl-4 ml-6 border-l border-white/10">
+            </button>
+            
+            <div id="superLigSubmenu" class="flex flex-col gap-1 mt-1 pl-4 ml-9 border-l border-white/10 @(isSuperLigMenuOpen ? "" : "hidden")">
                 <a href="/Football/Index" class="pl-4 py-2.5 rounded-r-xl flex items-center gap-3 transition-all duration-200 @(isFootball ? "text-white bg-gradient-to-r from-blue-500/20 to-transparent border-l-2 border-blue-500 -ml-[1px]" : "text-slate-400 hover:text-white hover:bg-white/5 border-l-2 border-transparent -ml-[1px]")">
                     <span class="font-medium text-sm tracking-tight">Puan Durumu</span>
                 </a>
@@ -46,6 +58,15 @@
                 </a>
             </div>
         </div>
+
+        <a href="/Crypto/Index" class="mx-3 mt-2 px-4 py-3 rounded-xl flex items-center gap-3 transition-all duration-200 @(isCrypto ? "bg-white/10 text-white shadow-sm" : "text-slate-400 hover:text-white hover:bg-white/5")">
+            <span class="material-symbols-outlined @(isCrypto ? "text-amber-400" : "")" style="font-variation-settings: 'FILL' @(isCrypto ? "1" : "0");">currency_bitcoin</span>
+            <span class="font-medium text-sm tracking-tight">Kripto Piyasası</span>
+        </a>
+        <a href="/GasPrice/Index" class="mx-3 mt-2 px-4 py-3 rounded-xl flex items-center gap-3 transition-all duration-200 @(isGasPrice ? "bg-white/10 text-white shadow-sm" : "text-slate-400 hover:text-white hover:bg-white/5")">
+            <span class="material-symbols-outlined @(isGasPrice ? "text-teal-400" : "")" style="font-variation-settings: 'FILL' @(isGasPrice ? "1" : "0");">local_gas_station</span>
+            <span class="font-medium text-sm tracking-tight">Akaryakıt Fiyatları</span>
+        </a>
         <a href="/Exercise/Index" class="mx-3 mt-2 px-4 py-3 rounded-xl flex items-center gap-3 transition-all duration-200 @(isExercise ? "bg-white/10 text-white shadow-sm" : "text-slate-400 hover:text-white hover:bg-white/5")">
             <span class="material-symbols-outlined @(isExercise ? "text-emerald-400" : "")" style="font-variation-settings: 'FILL' @(isExercise ? "1" : "0");">fitness_center</span>
             <span class="font-medium text-sm tracking-tight">Günlük Egzersizler</span>
@@ -67,19 +88,29 @@
             <span class="font-medium text-sm tracking-tight">Finans Haberleri</span>
         </a>
     </nav>
+    
     <div class="p-6 flex flex-col gap-4 border-t border-white/5 bg-black/10">
-        <button class="relative group overflow-hidden bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white py-3 px-4 rounded-xl transition-all duration-300 flex items-center justify-center gap-2 shadow-lg shadow-blue-500/25">
-            <span class="material-symbols-outlined text-sm text-blue-200" style="font-variation-settings: 'FILL' 1;">stars</span>
-            <span class="font-bold text-sm tracking-tight">Premium Üyelik</span>
-        </button>
         <div class="flex items-center gap-3 px-2">
             <div class="w-8 h-8 rounded-full bg-slate-700 flex items-center justify-center border border-slate-600">
                 <span class="material-symbols-outlined text-slate-300 text-sm">person</span>
             </div>
             <div>
                 <p class="text-xs font-bold text-slate-300">Kerem Gönültaş</p>
-                <p class="text-[10px] text-slate-500 uppercase tracking-widest">ESTÜ</p>
             </div>
         </div>
     </div>
 </aside>
+
+<script>
+    function toggleSuperLigMenu() {
+        var submenu = document.getElementById('superLigSubmenu');
+        var icon = document.getElementById('superLigIcon');
+        if (submenu.classList.contains('hidden')) {
+            submenu.classList.remove('hidden');
+            icon.innerText = 'expand_less';
+        } else {
+            submenu.classList.add('hidden');
+            icon.innerText = 'expand_more';
+        }
+    }
+</script>

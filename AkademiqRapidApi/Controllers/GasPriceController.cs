@@ -8,12 +8,12 @@ using System.Text.Json;
 
 namespace AkademiqRapidApi.Controllers
 {
-    public class FinanceController : Controller
+    public class GasPriceController : Controller
     {
         private readonly IMemoryCache _memoryCache;
         private readonly IConfiguration _configuration;
 
-        public FinanceController(IMemoryCache memoryCache, IConfiguration configuration)
+        public GasPriceController(IMemoryCache memoryCache, IConfiguration configuration)
         {
             _memoryCache = memoryCache;
             _configuration = configuration;
@@ -21,17 +21,17 @@ namespace AkademiqRapidApi.Controllers
 
         public IActionResult Index()
         {
-            if (!_memoryCache.TryGetValue("FinanceDataCacheV3", out FinanceViewModel financeData))
+            if (!_memoryCache.TryGetValue("GasPriceCache", out GasPriceResponse gasData))
             {
                 var client = new HttpClient();
                 var request = new HttpRequestMessage
                 {
                     Method = HttpMethod.Get,
-                    RequestUri = new Uri("https://yahoo-finance15.p.rapidapi.com/api/v1/markets/news?ticker=AAPL%2CTSLA"),
+                    RequestUri = new Uri("https://gas-price.p.rapidapi.com/europeanCountries"),
                     Headers =
                     {
                         { "x-rapidapi-key", _configuration["RapidApiKey"] },
-                        { "x-rapidapi-host", "yahoo-finance15.p.rapidapi.com" },
+                        { "x-rapidapi-host", "gas-price.p.rapidapi.com" },
                     },
                 };
 
@@ -41,26 +41,26 @@ namespace AkademiqRapidApi.Controllers
                     response.EnsureSuccessStatusCode();
                     var jsonBody = response.Content.ReadAsStringAsync().Result;
 
-                    financeData = JsonSerializer.Deserialize<FinanceViewModel>(jsonBody);
-
-                    if (financeData != null && financeData.body != null)
+                    var options = new JsonSerializerOptions
                     {
-                        foreach (var news in financeData.body)
-                        {
-                            news.title = AkademiqRapidApi.Models.TranslationHelper.TranslateToTurkish(news.title);
-                            news.description = AkademiqRapidApi.Models.TranslationHelper.TranslateToTurkish(news.description);
-                        }
+                        PropertyNameCaseInsensitive = true,
+                        IgnoreNullValues = true
+                    };
 
-                        _memoryCache.Set("FinanceDataCacheV3", financeData, TimeSpan.FromHours(12));
+                    gasData = JsonSerializer.Deserialize<GasPriceResponse>(jsonBody, options);
+
+                    if (gasData?.result != null && gasData.result.Count > 0)
+                    {
+                        _memoryCache.Set("GasPriceCache", gasData, TimeSpan.FromHours(12));
                     }
                 }
                 catch
                 {
-                    financeData = new FinanceViewModel();
+                    gasData = new GasPriceResponse();
                 }
             }
 
-            return View(financeData);
+            return View(gasData?.result);
         }
     }
 }

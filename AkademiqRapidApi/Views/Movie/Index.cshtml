@@ -20,7 +20,7 @@
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 xl:gap-8">
         @if (Model != null && Model.Any())
         {
-            @foreach (var movie in Model.Take(12)) // Sadece ilk 12 filmi listeliyoruz
+            @foreach (var movie in Model.Take(12)) 
             {
                 <div class="group relative flex flex-col bg-slate-900 rounded-[2rem] overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2">
                     

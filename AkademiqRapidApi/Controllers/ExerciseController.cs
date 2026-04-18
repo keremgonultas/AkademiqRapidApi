@@ -1,6 +1,7 @@
 ﻿using AkademiqRapidApi.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
@@ -11,10 +12,12 @@ namespace AkademiqRapidApi.Controllers
     public class ExerciseController : Controller
     {
         private readonly IMemoryCache _memoryCache;
+        private readonly IConfiguration _configuration;
 
-        public ExerciseController(IMemoryCache memoryCache)
+        public ExerciseController(IMemoryCache memoryCache, IConfiguration configuration)
         {
             _memoryCache = memoryCache;
+            _configuration = configuration;
         }
 
         public IActionResult Index()
@@ -28,7 +31,7 @@ namespace AkademiqRapidApi.Controllers
                     RequestUri = new Uri("https://exercisedb.p.rapidapi.com/exercises?limit=10"),
                     Headers =
                     {
-                        { "x-rapidapi-key", "fab1dc0c34msha15b0520af426b0p15289fjsndb95a722c59f" },
+                        { "x-rapidapi-key", _configuration["RapidApiKey"] },
                         { "x-rapidapi-host", "exercisedb.p.rapidapi.com" },
                     },
                 };
