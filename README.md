@@ -1,5 +1,6 @@
-#🚀 Akademiq API Dashboard: The Digital Curator
-Bu proje, AkademiQ.Ai eğitim programı kapsamında geliştirilmiş; finans, spor, hava durumu ve medya gibi farklı kategorilerdeki verileri tek bir merkezde toplayan, performans ve güvenlik odaklı bir Full Stack Dashboard uygulamasıdır.
+<img width="1911" height="944" alt="ANA SAYFA" src="https://github.com/user-attachments/assets/1be4b0be-06c6-48ed-b0e9-2d652a4d1fbb" />
+🚀#API Dashboard: Çoklu API Paneli
+Bu proje; finans, spor, hava durumu ve medya gibi farklı kategorilerdeki verileri tek bir merkezde toplayan, performans ve güvenlik odaklı geliştirilmiş bir Full Stack Dashboard uygulamasıdır.
 
 **📌 Proje Hakkında**
 Günümüzün dijital dünyasında doğru veriye hızlı ve düzenli ulaşmak her zamankinden daha kritik. Akademiq API Dashboard, 10'un üzerinde farklı API servisinden gelen karmaşık veri yığınlarını, modern ve kullanıcı dostu bir arayüz ile anlamlı bir deneyime dönüştürür. Projenin temel felsefesi, veriyi sadece izlemek değil, onu en verimli ve güvenli şekilde yönetmektir.
@@ -50,6 +51,45 @@ JSON
 
 **4.** Projeyi F5 ile veya dotnet run komutuyla başlatın.
 
-<img width="1911" height="946" alt="PUAN DURUMU" src="https://github.com/user-attachments/assets/b8c74a14-45c9-4b78-87f2-912822d60682" />
-<img width="1911" height="944" alt="ANA SAYFA" src="https://github.com/user-attachments/assets/1be4b0be-06c6-48ed-b0e9-2d652a4d1fbb" />
+<img width="1911" height="946" alt="HAVA DURUMU" src="https://github.com/user-attachments/assets/9e6e1e09-302c-47ff-8c7b-3ea051569c4b" />
+
+
+<img width="1911" height="946" alt="PUAN DURUMU" src="https://github.com/user-attachments/assets/be1b669c-92fe-4c71-b0b0-99fc64aeecf6" />
+
+
+<img width="1911" height="946" alt="FİKSTÜR" src="https://github.com/user-attachments/assets/02b05b72-d909-4d33-b9ed-719aad9514ff" />
+
+
+<img width="1911" height="947" alt="KRİPTO" src="https://github.com/user-attachments/assets/40810c7d-7db9-4987-a78a-edb3757197b7" />
+
+
+<img width="1911" height="947" alt="AKARYAKIT" src="https://github.com/user-attachments/assets/90a23a7b-ef4c-460b-8a4d-67d7548d1b6e" />
+
+
+
+<img width="1911" height="947" alt="EGZERSİZ" src="https://github.com/user-attachments/assets/a651b1bf-5250-4890-8497-5d3aa888d7c0" />
+
+
+
+<img width="1912" height="947" alt="TARİF" src="https://github.com/user-attachments/assets/deafe3d5-ea86-4cb2-abf1-0e821d5ec5f3" />
+
+
+
+<img width="1912" height="947" alt="TREND" src="https://github.com/user-attachments/assets/c57ec66c-2cb3-446b-aebe-278ecaf02766" />
+
+
+
+<img width="1912" height="947" alt="FİLM" src="https://github.com/user-attachments/assets/e6a4ff7b-bf4f-4b7c-b874-2d6aea2adb3c" />
+
+
+
+
+<img width="1912" height="949" alt="FİNANS" src="https://github.com/user-attachments/assets/a722cc5c-5bfb-463b-9574-2e8630b8ef0b" />
+
+
+
+
+
+
+
 
