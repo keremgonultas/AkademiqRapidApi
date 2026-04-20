@@ -1,11 +1,13 @@
 <img width="1911" height="944" alt="ANA SAYFA" src="https://github.com/user-attachments/assets/1be4b0be-06c6-48ed-b0e9-2d652a4d1fbb" />
-🚀#API Dashboard: Çoklu API Paneli
+# 🚀API Dashboard: Çoklu API Paneli
 Bu proje; finans, spor, hava durumu ve medya gibi farklı kategorilerdeki verileri tek bir merkezde toplayan, performans ve güvenlik odaklı geliştirilmiş bir Full Stack Dashboard uygulamasıdır.
 
-**📌 Proje Hakkında**
+
+## 📌 Proje Hakkında
 Günümüzün dijital dünyasında doğru veriye hızlı ve düzenli ulaşmak her zamankinden daha kritik. Akademiq API Dashboard, 10'un üzerinde farklı API servisinden gelen karmaşık veri yığınlarını, modern ve kullanıcı dostu bir arayüz ile anlamlı bir deneyime dönüştürür. Projenin temel felsefesi, veriyi sadece izlemek değil, onu en verimli ve güvenli şekilde yönetmektir.
 
-**✨ Öne Çıkan Özellikler & Modüller**
+
+## ✨ Öne Çıkan Özellikler & Modüller**
 Platform, her biri bağımsız çalışan ancak ana panelde senkronize olan zengin modüllerden oluşur:
 
 **🌐 Piyasa Analizi:** Kripto paralar ve akaryakıt fiyatları gibi dinamik ekonomik verilerin anlık takibi.
@@ -18,7 +20,9 @@ Platform, her biri bağımsız çalışan ancak ana panelde senkronize olan zeng
 
 **🍽️ Yapay Zeka Destekli İçerik:** AI tabanlı yemek tarifi motoru ve günlük motivasyon araçları.
 
-**🛠️ Teknolojik Altyapı**
+
+
+# 🛠️ Teknolojik Altyapı
 Projenin temelinde modern yazılım dünyasının güncel araçları ve mimari yaklaşımları yer almaktadır:
 
 **Core:** .NET 10.0 (ASP.NET Core MVC)
@@ -31,7 +35,8 @@ Projenin temelinde modern yazılım dünyasının güncel araçları ve mimari y
 
 **Integration:** Dependency Injection, Async/Await yapıları ve özel yardımcı sınıflar (Helper Classes) ile 10+ API yönetimi.
 
-**⚙️ Kurulum ve Çalıştırma**
+
+# ⚙️ Kurulum ve Çalıştırma
 Projeyi yerel makinenizde çalıştırmak için şu adımları izleyebilirsiniz:
 
 **1.** Projeyi klonlayın: git clone [REPO_LINKI]
@@ -44,10 +49,14 @@ Projeyi yerel makinenizde çalıştırmak için şu adımları izleyebilirsiniz:
 
 - Aşağıdaki JSON yapısını kendi API anahtarınızla doldurun:
 
+'''
+
 JSON
 {
   "RapidApiKey": "YOUR_API_KEY_HERE"
 }
+
+'''
 
 **4.** Projeyi F5 ile veya dotnet run komutuyla başlatın.
 
